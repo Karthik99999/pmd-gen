@@ -1,9 +1,9 @@
 ## PMD Gen
 
-This is a WIP website for password generation for Pokemon Mystery Dungeon games. Currently supports PMD RT DX. Check the TODO list below to see what's planned (anything planned is not 100% guaranteed). This is my first full project written in Go, so if you are a more seasoned Go dev and noticed some things I can improve, please don't hesitate to let me know!
+This is a WIP website for password generation for Pokemon Mystery Dungeon games. Currently supports Rescue Team DX. Check the TODO list below to see what's planned (anything planned is not 100% guaranteed). This is my first full project written in Go, so if you are a more seasoned Go dev and noticed some things I can improve, please don't hesitate to let me know!
 
 ## TODO
-#### RT DX
+#### Rescue Team DX
 - Show info on password page
 - Better error handling
 
