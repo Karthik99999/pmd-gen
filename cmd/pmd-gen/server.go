@@ -27,7 +27,7 @@ func main() {
   r.StaticFile("/data.json", "internal/romdata/data.json")
 
 	r.GET("/", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "web/index.html", gin.H{})
+    c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
   r.GET("/generate", func(c *gin.Context) {
     var team []int
@@ -96,10 +96,10 @@ func main() {
     c.Redirect(http.StatusMovedPermanently, "/password?password=" + pswd + "&type=1")
   })
   r.GET("/error", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "web/error.html", gin.H{})
+    c.HTML(http.StatusOK, "error.html", gin.H{})
 	})
   r.GET("/password", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "web/rtdx-password.html", gin.H{})
+    c.HTML(http.StatusOK, "rtdx-password.html", gin.H{})
 	})
   r.Run(getPort())
 }
