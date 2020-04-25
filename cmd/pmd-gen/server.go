@@ -24,6 +24,7 @@ func main() {
   r.Static("/css", "web/css")
   r.Static("/images", "web/images")
   r.Static("/js", "web/js")
+  r.StaticFile("/favicon.ico", "web/favicon.ico")
   r.StaticFile("/data.json", "internal/romdata/data.json")
 
 	r.GET("/", func(c *gin.Context) {
