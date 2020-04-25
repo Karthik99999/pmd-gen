@@ -34,7 +34,7 @@ type romdata struct {
 }
 
 func GetRomData() *romdata {
-  file, _ := ioutil.ReadFile("./data.json")
+  file, _ := ioutil.ReadFile("internal/romdata/data.json")
   data := &romdata{}
   _ = json.Unmarshal(file, &data)
   return data
