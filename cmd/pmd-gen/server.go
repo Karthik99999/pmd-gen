@@ -71,6 +71,10 @@ func main() {
     }
     rc := NewRescueCode(password)
     info := rc.deserialize()
+    // go to error if password is not valid
+    if (info.Incl_Checksum != info.Calc_Checksum) {
+      c.Redirect(http.StatusMovedPermanently, "/error")
+    }
     // Generate revival password
     var team []int
     teamName := c.Query("team")
