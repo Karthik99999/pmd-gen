@@ -1,0 +1,40 @@
+body {
+  background-image: url("../images/background_mobile.jpg");
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+@media only screen and (min-width: 768px) {
+  body {
+    background-image: url("../images/background.jpg");
+  }
+}
+
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.card {
+  border: none;
+  width: 20rem;
+}
+
+.card-img-top {
+  padding: 2%;
+}
+
+canvas {
+  width: calc(100% * 0.9);
+  height: calc(100% * 0.9);
+}
+
+@media only screen and (min-width: 768px) {
+  canvas {
+    width: inherit;
+    height: inherit;
+  }
+}

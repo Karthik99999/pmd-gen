@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PMD Gen</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container-fluid vertical-center">
+    <div class="col-md-12">
+      <div class="jumbotron" style="background-color:lightBlue">
+        <div class="row justify-content-center">
+          <div class="col-sm-auto">
+            <div class="card" style="background:linear-gradient(#ED1C24, #0097DC)">
+              <img src="./images/RTDX_LOGO.png" class="card-img-top" alt="Rescue_DX">
+              <div class="card-body">
+                <button class="btn btn-success" data-toggle="modal" data-target="#rtdx-friend-rescue">Friend Rescue</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#rtdx-revive">Revival Password</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="rtdx-friend-rescue" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="rtdx-friend-rescue" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Rescue Team DX Friend Rescue Password Generator</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="generate" method="get">
+            <div class="form-group">
+              <label for="team">Team name:</label>
+              <input type="text" class="form-control" name="team" maxlength="12" placeholder="Poképals" required>
+            </div>
+            <div class="form-group">
+              <label for="dungeon">Dungeon:</label>
+              <select class="form-control" id="rtdx-dungeons" name="dungeon" required></select>
+            </div>
+            <div class="form-group">
+              <label for="floor">Floor:</label>
+              <input type="number" class="form-control" id="rtdx-floor" name="floor" min="1" max="3" required></input>
+            </div>
+            <div class="form-group">
+              <label for="pokemon">Pokémon:</label>
+              <select class="form-control" id="rtdx-pokemon" name="pokemon" required></select>
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender:</label>
+              <select class="form-control" name="gender" required>
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+                <option value="2">Genderless</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reward">Reward:</label>
+              <select class="form-control" name="reward" required>
+                <option value="1">Regular</option>
+                <option value="2">Special</option>
+                <option value="3">Deluxe</option>
+              </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Generate</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="rtdx-revive" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="rtdx-friend-rescue" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Rescue Team DX Friend Rescue Password Generator</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>The password should be entered with two charcters per symbol. The first character being the number/letter on top, and the second being the first letter of the shape.</p>
+          <p>F = Fire</p>
+          <p>H = Heart</p>
+          <p>W = Water</p>
+          <p>E = Emerald</p>
+          <p>S = Star</p>
+          <p>For example: "1f xh pw 4e 8s"</p>
+          <form action="revival" method="get">
+            <div class="form-group">
+              <label for="password">Rescue password:</label>
+              <textarea type="text" class="form-control" name="password" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="team">Team name (that will "rescue" you):</label>
+              <input type="text" class="form-control" name="team" maxlength="12" placeholder="Poképals" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Generate</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="./js/index.js"></script>
+</body>
+
+</html>
