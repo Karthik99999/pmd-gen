@@ -36,11 +36,10 @@ function drawPassword(password) {
       "s": star
     }
     symbols[char.charAt(1)].addEventListener("load", ctx.drawImage(symbols[char.charAt(1)], x, y, 40, 40))
-    var xc, yc
-    xc = x + 14
-    yc = y + 29
-    ctx.fillText(char.charAt(0).toUpperCase(), xc, yc)
-    ctx.strokeText(char.charAt(0).toUpperCase(), xc, yc)
+    var xc = x + 10
+    var yc = y + 10
+    var character = document.getElementById(char.charAt(0))
+    character.addEventListener("load", ctx.drawImage(character, xc, yc, 20, 20))
   }
   // First row
   drawSymbol(password[0], 68, 70)
