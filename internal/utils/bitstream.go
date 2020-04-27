@@ -65,7 +65,7 @@ func NewBitstreamWriter(bytesize int) *bitstreamWriter {
 	return writer
 }
 
-// Finish returns the writen bitstream
+// Finish returns the written bitstream
 func (bw *bitstreamWriter) Finish() []int {
 	if bw.bits > 0 {
 		bw.bytes = append(bw.bytes, bw.value&((1<<bw.bytesize)-1))
