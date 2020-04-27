@@ -1,14 +1,14 @@
 package romdata
 
 import (
-  "encoding/json"
-  "io/ioutil"
+	"encoding/json"
+	"io/ioutil"
 )
 
 type romdata struct {
-	Charmap     string        `json:"charmap"`
-	CharmapText string        `json:"charmap_text"`
-	Crc32Table  []int `json:"crc32table"`
+	Charmap     string `json:"charmap"`
+	CharmapText string `json:"charmap_text"`
+	Crc32Table  []int  `json:"crc32table"`
 	Dungeons    []struct {
 		Ascending bool   `json:"ascending"`
 		Const     string `json:"const"`
@@ -34,8 +34,8 @@ type romdata struct {
 }
 
 func GetRomData() *romdata {
-  file, _ := ioutil.ReadFile("internal/romdata/data.json")
-  data := &romdata{}
-  _ = json.Unmarshal(file, &data)
-  return data
+	file, _ := ioutil.ReadFile("internal/romdata/data.json")
+	data := &romdata{}
+	_ = json.Unmarshal(file, &data)
+	return data
 }

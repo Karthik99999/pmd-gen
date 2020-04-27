@@ -38,17 +38,17 @@ func (this *bitstreamReader) Read(count int) int {
 		this.pos++
 	}
 
-  ret := this.value & ((1 << count) - 1)
+	ret := this.value & ((1 << count) - 1)
 	this.value >>= count
 	this.bits -= count
-  return ret
+	return ret
 }
 
 type bitstreamWriter struct {
-  bytes []int
-  bytesize int
-  bits int
-  value int
+	bytes    []int
+	bytesize int
+	bits     int
+	value    int
 }
 
 func NewBitstreamWriter(bytesize int) *bitstreamWriter {
@@ -61,18 +61,18 @@ func NewBitstreamWriter(bytesize int) *bitstreamWriter {
 }
 
 func (this *bitstreamWriter) Finish() []int {
-  if this.bits > 0 {
-    this.bytes = append(this.bytes, this.value & ((1 << this.bytesize) - 1))
-  }
-  return this.bytes
+	if this.bits > 0 {
+		this.bytes = append(this.bytes, this.value&((1<<this.bytesize)-1))
+	}
+	return this.bytes
 }
 
 func (this *bitstreamWriter) Write(value int, bits int) {
-  this.value |= (value & ((1 << bits) - 1)) << this.bits
-  this.bits += bits
-  for this.bits >= this.bytesize {
-    this.bytes = append(this.bytes, this.value & ((1 << this.bytesize) - 1))
-    this.value >>= this.bytesize
-    this.bits -= this.bytesize
-  }
+	this.value |= (value & ((1 << bits) - 1)) << this.bits
+	this.bits += bits
+	for this.bits >= this.bytesize {
+		this.bytes = append(this.bytes, this.value&((1<<this.bytesize)-1))
+		this.value >>= this.bytesize
+		this.bits -= this.bytesize
+	}
 }
