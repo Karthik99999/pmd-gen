@@ -2,6 +2,7 @@ package main
 
 import "github.com/Karthik99999/pmd-gen/internal/utils"
 
+// RescueData contains info for a rescue/revival password
 type RescueData struct {
 	Timestamp int   `json:"timestamp"`
 	Type      int   `json:"type"`
@@ -26,7 +27,7 @@ func shuffle(code []string) []string {
 
 // convert symbols to indexes 0-63
 // xs is not used in passwords due to 64 being a 7 bit number
-func to_symbols(bitstream []int) []string {
+func toSymbols(bitstream []int) []string {
 	symbols := []string{"1f", "2f", "3f", "4f", "5f", "6f", "7f", "8f", "9f", "pf", "mf", "df", "xf",
 		"1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "ph", "mh", "dh", "xh",
 		"1w", "2w", "3w", "4w", "5w", "6w", "7w", "8w", "9w", "pw", "mw", "dw", "xw",
@@ -49,7 +50,7 @@ func bitunpack(bytearr []int) []string {
 		}
 		bitstream = append(bitstream, reader.Read(6))
 	}
-	return to_symbols(bitstream)
+	return toSymbols(bitstream)
 }
 
 // encrypt the code using rng
@@ -66,27 +67,27 @@ func encrypt(data []int) []string {
 	return bitunpack(newcode)
 }
 
-func (this *RescueData) serialize() []string {
+func (rd *RescueData) serialize() []string {
 	writer := utils.NewBitstreamWriter(8)
-	writer.Write(this.Timestamp, 32)
-	writer.Write(this.Type, 1)
+	writer.Write(rd.Timestamp, 32)
+	writer.Write(rd.Type, 1)
 	writer.Write(0, 1) // Unknown, Can be either 0 or 1
 	for i := 0; i < 12; i++ {
-		if i < len(this.Team) {
-			writer.Write(this.Team[i], 9)
+		if i < len(rd.Team) {
+			writer.Write(rd.Team[i], 9)
 		} else {
 			writer.Write(0, 9)
 		}
 	}
-	if this.Type == 0 {
-		writer.Write(this.Dungeon, 7)
-		writer.Write(this.Floor, 7)
-		writer.Write(this.Pokemon, 11)
-		writer.Write(this.Gender, 2)
-		writer.Write(this.Reward, 2)
+	if rd.Type == 0 {
+		writer.Write(rd.Dungeon, 7)
+		writer.Write(rd.Floor, 7)
+		writer.Write(rd.Pokemon, 11)
+		writer.Write(rd.Gender, 2)
+		writer.Write(rd.Reward, 2)
 		writer.Write(0, 1) // Unknown, Can be either 0 or 1
 	} else {
-		writer.Write(this.Revive, 30)
+		writer.Write(rd.Revive, 30)
 	}
 
 	data := writer.Finish()

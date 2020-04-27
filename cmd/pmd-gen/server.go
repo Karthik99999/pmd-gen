@@ -73,7 +73,7 @@ func main() {
 		rc := NewRescueCode(password)
 		info := rc.deserialize()
 		// go to error if password is not valid
-		if info.Incl_Checksum != info.Calc_Checksum {
+		if info.InclChecksum != info.CalcChecksum {
 			c.Redirect(http.StatusMovedPermanently, "/error")
 		}
 		// Generate revival password

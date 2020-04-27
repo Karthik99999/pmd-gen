@@ -1,18 +1,19 @@
 package utils
 
-type RNG struct {
+// dotnet seeded rng implementation
+// For test cases
+// https://docs.microsoft.com/en-us/dotnet/api/system.random.-ctor?view=netframework-4.8#System_Random__ctor_System_Int32_
+// Based off
+// https://github.com/mid-kid/pmdrtdx_passwords/blob/26e067a42dc2bf62cd45522ee95fabdbd5b95630/password.py#L7
+type rng struct {
 	i1    int
 	i2    int
 	state []int
 }
 
-// dotnet seeded RNG implementation
-// For test cases
-// https://docs.microsoft.com/en-us/dotnet/api/system.random.-ctor?view=netframework-4.8#System_Random__ctor_System_Int32_
-// Based off
-// https://github.com/mid-kid/pmdrtdx_passwords/blob/26e067a42dc2bf62cd45522ee95fabdbd5b95630/password.py#L7
-func NewRNG(seed int) RNG {
-	rng := RNG{}
+// NewRNG creates a new instance of the rng struct
+func NewRNG(seed int) *rng {
+	rng := &rng{}
 	seed = 0x9A4EC86 - seed
 	rng.state = make([]int, 56)
 	rng.state[0] = 0
@@ -39,7 +40,7 @@ func NewRNG(seed int) RNG {
 	return rng
 }
 
-// Advances the rng
+// NextInt advances the rng
 func (r *RNG) NextInt() int {
 	r.i1++
 	r.i2++

@@ -8,6 +8,7 @@ type bitstreamReader struct {
 	value    int
 }
 
+// NewBitstreamReader returns a new instance of the bitstreamReader struct
 func NewBitstreamReader(bytes []int, bytesize int) *bitstreamReader {
 	reader := &bitstreamReader{}
 	reader.bytes = bytes
@@ -18,29 +19,32 @@ func NewBitstreamReader(bytes []int, bytesize int) *bitstreamReader {
 	return reader
 }
 
-func (this *bitstreamReader) Remaining() bool {
-	if this.pos < len(this.bytes) {
+// Remaining returns a boolean stating whether there is still
+// something to read in the bitstream
+func (br *bitstreamReader) Remaining() bool {
+	if br.pos < len(br.bytes) {
 		return true
 	}
-	if this.bits > 0 {
+	if br.bits > 0 {
 		return true
 	}
 	return false
 }
 
-func (this *bitstreamReader) Read(count int) int {
-	for this.bits < count {
-		if this.pos >= len(this.bytes) {
+// Read reads a given number of bits from the bitstream
+func (br *bitstreamReader) Read(count int) int {
+	for br.bits < count {
+		if br.pos >= len(br.bytes) {
 			break
 		}
-		this.value |= (this.bytes[this.pos] & ((1 << this.bytesize) - 1)) << this.bits
-		this.bits += this.bytesize
-		this.pos++
+		br.value |= (br.bytes[br.pos] & ((1 << br.bytesize) - 1)) << br.bits
+		br.bits += br.bytesize
+		br.pos++
 	}
 
-	ret := this.value & ((1 << count) - 1)
-	this.value >>= count
-	this.bits -= count
+	ret := br.value & ((1 << count) - 1)
+	br.value >>= count
+	br.bits -= count
 	return ret
 }
 
@@ -51,6 +55,7 @@ type bitstreamWriter struct {
 	value    int
 }
 
+// NewBitstreamWriter returns a new instance of the bitstreamWriter struct
 func NewBitstreamWriter(bytesize int) *bitstreamWriter {
 	writer := &bitstreamWriter{}
 	writer.bytes = make([]int, 0)
@@ -60,19 +65,22 @@ func NewBitstreamWriter(bytesize int) *bitstreamWriter {
 	return writer
 }
 
-func (this *bitstreamWriter) Finish() []int {
-	if this.bits > 0 {
-		this.bytes = append(this.bytes, this.value&((1<<this.bytesize)-1))
+// Finish returns the writen bitstream
+func (bw *bitstreamWriter) Finish() []int {
+	if bw.bits > 0 {
+		bw.bytes = append(bw.bytes, bw.value&((1<<bw.bytesize)-1))
 	}
-	return this.bytes
+	return bw.bytes
 }
 
-func (this *bitstreamWriter) Write(value int, bits int) {
-	this.value |= (value & ((1 << bits) - 1)) << this.bits
-	this.bits += bits
-	for this.bits >= this.bytesize {
-		this.bytes = append(this.bytes, this.value&((1<<this.bytesize)-1))
-		this.value >>= this.bytesize
-		this.bits -= this.bytesize
+// Write writes the supplied value into the bitstream
+// with the bit length being specified
+func (bw *bitstreamWriter) Write(value int, bits int) {
+	bw.value |= (value & ((1 << bits) - 1)) << bw.bits
+	bw.bits += bits
+	for bw.bits >= bw.bytesize {
+		bw.bytes = append(bw.bytes, bw.value&((1<<bw.bytesize)-1))
+		bw.value >>= bw.bytesize
+		bw.bits -= bw.bytesize
 	}
 }
