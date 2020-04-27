@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
 	"github.com/Karthik99999/pmd-gen/internal/utils"
 	"math"
@@ -32,7 +31,6 @@ func (rc *rescueCode) unshuffle() []string {
 	for i := 0; i < len(unshuffledIndex); i++ {
 		unshuffled[i] = rc.code[unshuffledIndex[i]]
 	}
-	fmt.Println(unshuffled)
 	return unshuffled
 }
 
@@ -60,10 +58,7 @@ func (rc *rescueCode) toIndexes() []int {
 func (rc *rescueCode) bitpack() []int {
 	var newcode []int
 	reader := utils.NewBitstreamReader(rc.toIndexes(), 6)
-	for {
-		if !reader.Remaining() {
-			break
-		}
+	for reader.Remaining() {
 		newcode = append(newcode, reader.Read(8))
 	}
 	return newcode
@@ -106,7 +101,6 @@ func checksum(code []int) int {
 func crc32(bytes string) int {
 	sum := 0xFFFFFFFF
 	for i := 0; i < len(bytes); i++ {
-		fmt.Println(bytes[i])
 		sum = romdata.GetRomData().Crc32Table[(sum&0xFF)^int(bytes[i])] ^ (sum >> 8)
 	}
 	return sum ^ 0xFFFFFFFF

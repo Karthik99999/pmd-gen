@@ -44,10 +44,7 @@ func toSymbols(bitstream []int) []string {
 func bitunpack(bytearr []int) []string {
 	var bitstream []int
 	reader := utils.NewBitstreamReader(bytearr, 8)
-	for {
-		if !reader.Remaining() {
-			break
-		}
+	for reader.Remaining() {
 		bitstream = append(bitstream, reader.Read(6))
 	}
 	return toSymbols(bitstream)
