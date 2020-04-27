@@ -41,7 +41,7 @@ func NewRNG(seed int) *rng {
 }
 
 // NextInt advances the rng
-func (r *RNG) NextInt() int {
+func (r *rng) NextInt() int {
 	r.i1++
 	r.i2++
 	if r.i1 > 55 {
