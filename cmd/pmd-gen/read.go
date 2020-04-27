@@ -115,17 +115,17 @@ func crc32(bytes string) int {
 type rescueInfo struct {
 	InclChecksum int   `json:"incl_checksum"`
 	CalcChecksum int   `json:"calc_checksum"`
-	Timestamp     int   `json:"timestamp"`
-	Type          int   `json:"type"`
-	Unknown1      int   `json:"unknown1"`
-	Team          []int `json:"team"`
-	Dungeon       int   `json:"dungeon"`
-	Floor         int   `json:"floor"`
-	Pokemon       int   `json:"pokemon"`
-	Gender        int   `json:"gender"`
-	Reward        int   `json:"reward"`
-	Unknown2      int   `json:"unknown2"`
-	Revive        int   `json:"revive"`
+	Timestamp    int   `json:"timestamp"`
+	Type         int   `json:"type"`
+	Unknown1     int   `json:"unknown1"`
+	Team         []int `json:"team"`
+	Dungeon      int   `json:"dungeon"`
+	Floor        int   `json:"floor"`
+	Pokemon      int   `json:"pokemon"`
+	Gender       int   `json:"gender"`
+	Reward       int   `json:"reward"`
+	Unknown2     int   `json:"unknown2"`
+	Revive       int   `json:"revive"`
 }
 
 func (rc *rescueCode) deserialize() *rescueInfo {
