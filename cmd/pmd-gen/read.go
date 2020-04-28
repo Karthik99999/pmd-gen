@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
 	"github.com/Karthik99999/pmd-gen/internal/utils"
-	"math"
 	"strings"
 )
 
