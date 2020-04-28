@@ -81,21 +81,12 @@ func (rc *rescueCode) decrypt() []int {
 
 // calculate checksum
 func checksum(code []int) int {
-	calc := code[0]
-	for i := 1; i < int(math.Floor(float64((len(code)-1)/2))*2); i += 2 {
-		calc += code[i] | (code[i+1] << 8)
+	var sum int
+	for _, b := range code {
+		sum += b
 	}
-	if len(code)%2 == 0 {
-		calc += code[len(code)-1]
-	}
-
-	calc = ((calc >> 16) & 0xFFFF) + (calc & 0xFFFF)
-	calc += calc >> 16
-	calc = ((calc >> 8) & 0xFF) + (calc & 0xFF)
-	calc += calc >> 8
-	calc &= 0xFF
-	calc ^= 0xFF
-	return calc
+	checksum := ^(sum + (sum >> 8)) & 0xFF
+	return checksum
 }
 
 func crc32(bytes string) int {
