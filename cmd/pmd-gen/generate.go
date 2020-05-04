@@ -33,35 +33,35 @@ func toSymbols(bitstream []int) []string {
 		"1w", "2w", "3w", "4w", "5w", "6w", "7w", "8w", "9w", "pw", "mw", "dw", "xw",
 		"1e", "2e", "3e", "4e", "5e", "6e", "7e", "8e", "9e", "pe", "me", "de", "xe",
 		"1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "ps", "ms", "ds"}
-	unshuffled := make([]string, 30)
-	for i := 0; i < len(unshuffled); i++ {
-		unshuffled[i] = symbols[bitstream[i]]
+	code := make([]string, 30)
+	for i := 0; i < len(code); i++ {
+		code[i] = symbols[bitstream[i]]
 	}
-	return shuffle(unshuffled)
+	return code
 }
 
 // bitpack the code
-func bitunpack(bytearr []int) []string {
+func bitunpack(bytearr []int) []int {
 	var bitstream []int
 	reader := utils.NewBitstreamReader(bytearr, 8)
 	for reader.Remaining() {
 		bitstream = append(bitstream, reader.Read(6))
 	}
-	return toSymbols(bitstream)
+	return bitstream
 }
 
 // encrypt the code using rng
-func encrypt(data []int) []string {
-	newcode := []int{data[0], data[1]}
+func encrypt(data []int) []int {
+	encrypted := []int{data[0], data[1]}
 	seed := data[0] | data[1]<<8
 	rng := utils.NewRNG(seed)
 	for i := 2; i < len(data); i++ {
 		rand := rng.NextInt()
-		newcode = append(newcode, (data[i]+rand)&0xFF)
+		encrypted = append(encrypted, (data[i]+rand)&0xFF)
 	}
 	remain := 8 - (len(data) * 8 % 6)
-	newcode[len(newcode)-1] &= (1 << remain) - 1
-	return bitunpack(newcode)
+	encrypted[len(encrypted)-1] &= (1 << remain) - 1
+	return encrypted
 }
 
 func (rd *RescueData) serialize() []string {
@@ -89,5 +89,10 @@ func (rd *RescueData) serialize() []string {
 
 	data := writer.Finish()
 	data = append([]int{checksum(data)}, data...)
-	return encrypt(data)
+	// Serealize data
+	encrypted := encrypt(data)
+	bitstream := bitunpack(encrypted)
+	symbols := toSymbols(bitstream)
+	code := shuffle(symbols)
+	return code
 }
