@@ -26,7 +26,7 @@ $(function() {
     })
     // Add pokemon to form
     var pokemonSelect = document.getElementById("rtdx-pokemon")
-    var pokemon = data.pokemon.filter(p => p.valid === true)
+    var pokemon = data.pokemon.filter(p => p.valid === true).sort((a, b) => a.name.localeCompare(b.name))
     pokemon.forEach(p => {
       var option = document.createElement("option")
       option.value = data.pokemon.indexOf(data.pokemon.find(m => m["const"] === p["const"]))
