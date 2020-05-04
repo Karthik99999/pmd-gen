@@ -24,28 +24,27 @@ func NewRescueCode(code string) *rescueCode {
 }
 
 // unshuffled password symbols
-func (rc *rescueCode) unshuffle() []string {
+func unshuffle(code []string) []string {
 	unshuffledIndex := []int{3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26}
 	unshuffled := make([]string, 30)
 	for i := 0; i < len(unshuffledIndex); i++ {
-		unshuffled[i] = rc.code[unshuffledIndex[i]]
+		unshuffled[i] = code[unshuffledIndex[i]]
 	}
 	return unshuffled
 }
 
 // convert symbols to indexes 0-63
 // xs is not used in passwords due to 64 being a 7 bit number
-func (rc *rescueCode) toIndexes() []int {
+func toIndexes(code []string) []int {
 	symbols := []string{"1f", "2f", "3f", "4f", "5f", "6f", "7f", "8f", "9f", "pf", "mf", "df", "xf",
 		"1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "ph", "mh", "dh", "xh",
 		"1w", "2w", "3w", "4w", "5w", "6w", "7w", "8w", "9w", "pw", "mw", "dw", "xw",
 		"1e", "2e", "3e", "4e", "5e", "6e", "7e", "8e", "9e", "pe", "me", "de", "xe",
 		"1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "ps", "ms", "ds"}
 	indexes := make([]int, 30)
-	unshuffled := rc.unshuffle()
-	for i := 0; i < len(unshuffled); i++ {
+	for i := 0; i < len(code); i++ {
 		for j := 0; j < len(symbols); j++ {
-			if symbols[j] == strings.ToLower(unshuffled[i]) {
+			if symbols[j] == strings.ToLower(code[i]) {
 				indexes[i] = j
 			}
 		}
@@ -54,9 +53,9 @@ func (rc *rescueCode) toIndexes() []int {
 }
 
 // bitpack the code
-func (rc *rescueCode) bitpack() []int {
+func bitpack(indexes []int) []int {
 	var newcode []int
-	reader := utils.NewBitstreamReader(rc.toIndexes(), 6)
+	reader := utils.NewBitstreamReader(indexes, 6)
 	for reader.Remaining() {
 		newcode = append(newcode, reader.Read(8))
 	}
@@ -64,8 +63,7 @@ func (rc *rescueCode) bitpack() []int {
 }
 
 // decrypt the code by using the same rng method used to encrypt
-func (rc *rescueCode) decrypt() []int {
-	bitpacked := rc.bitpack()
+func decrypt(bitpacked []int) []int {
 	newcode := []int{bitpacked[0], bitpacked[1]}
 	seed := bitpacked[0] | bitpacked[1]<<8
 	rng := utils.NewRNG(seed)
@@ -113,7 +111,11 @@ type rescueInfo struct {
 }
 
 func (rc *rescueCode) deserialize() *rescueInfo {
-	code := rc.decrypt()
+	unshuffled := unshuffle(rc.code)
+	indexes := toIndexes(unshuffled)
+	bitpacked := bitpack(indexes)
+	code := decrypt(bitpacked)
+
 	info := &rescueInfo{
 		InclChecksum: code[0],
 		CalcChecksum: checksum(code[1:]),
@@ -136,19 +138,7 @@ func (rc *rescueCode) deserialize() *rescueInfo {
 		info.Reward = reader.Read(2)
 		info.Unknown2 = reader.Read(1)
 
-		symbols := []string{"1f", "2f", "3f", "4f", "5f", "6f", "7f", "8f", "9f", "pf", "mf", "df", "xf",
-			"1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "ph", "mh", "dh", "xh",
-			"1w", "2w", "3w", "4w", "5w", "6w", "7w", "8w", "9w", "pw", "mw", "dw", "xw",
-			"1e", "2e", "3e", "4e", "5e", "6e", "7e", "8e", "9e", "pe", "me", "de", "xe",
-			"1s", "2s", "3s", "4s", "5s", "6s", "7s", "8s", "9s", "ps", "ms", "ds"}
-		indexes := make([]int, 30)
-		for i := 0; i < len(rc.code); i++ {
-			for j := 0; j < len(symbols); j++ {
-				if symbols[j] == strings.ToLower(rc.code[i]) {
-					indexes[i] = j
-				}
-			}
-		}
+		indexes := toIndexes(rc.code)
 		charcode := ""
 		for _, x := range indexes {
 			charcode += string([]rune(romdata.GetRomData().Charmap)[x])
