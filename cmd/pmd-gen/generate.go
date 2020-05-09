@@ -1,9 +1,15 @@
 package main
 
-import "github.com/Karthik99999/pmd-gen/internal/utils"
+import (
+	"strings"
+	"time"
 
-// RescueData contains info for a rescue/revival password
-type RescueData struct {
+	"github.com/Karthik99999/pmd-gen/internal/romdata"
+	"github.com/Karthik99999/pmd-gen/internal/utils"
+	)
+
+// rescueData contains info for a rescue/revival password
+type rescueData struct {
 	Timestamp int   `json:"timestamp"`
 	Type      int   `json:"type"`
 	Team      []int `json:"team"`
@@ -13,6 +19,35 @@ type RescueData struct {
 	Gender    int   `json:"gender"`
 	Reward    int   `json:"reward"`
 	Revive    int   `json:"revive"`
+}
+
+// NewRescueData creates a new instance of RescueData
+func NewRescueData(pswdType int, teamName string, info ...int) *rescueData {
+	data := &rescueData{}
+	data.Timestamp = int(time.Now().Unix())
+	data.Type = pswdType
+	var team []int
+	for i := 0; i < 12; i++ {
+		if i < len(teamName) {
+			team = append(team, strings.Index(romdata.GetRomData().CharmapText, string(teamName[i]))-394)
+			// idk why I have to subtract 394 but it works
+		} else {
+			team = append(team, 0)
+		}
+	}
+	data.Team = team
+
+	if pswdType == 0 {
+		data.Dungeon = info[0]
+		data.Floor = info[1]
+		data.Pokemon = info[2]
+		data.Gender = info[3]
+		data.Reward = info[4]
+	} else {
+		data.Revive = info[0]
+	}
+
+	return data
 }
 
 // shuffle password symbols
@@ -64,7 +99,7 @@ func encrypt(data []int) []int {
 	return encrypted
 }
 
-func (rd *RescueData) serialize() []string {
+func (rd *rescueData) serialize() []string {
 	writer := utils.NewBitstreamWriter(8)
 	writer.Write(rd.Timestamp, 32)
 	writer.Write(rd.Type, 1)

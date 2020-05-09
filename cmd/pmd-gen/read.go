@@ -1,9 +1,10 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
 	"github.com/Karthik99999/pmd-gen/internal/utils"
-	"strings"
 )
 
 type rescueCode struct {

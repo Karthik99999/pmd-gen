@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/Karthik99999/pmd-gen/internal/romdata"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func getPort() string {
@@ -20,91 +19,55 @@ func getPort() string {
 
 func main() {
 	r := gin.Default()
-	r.LoadHTMLFiles("web/index.html", "web/rtdx-password.html", "web/error.html")
+	r.LoadHTMLFiles("web/index.html")
 	r.Static("/css", "web/css")
 	r.Static("/images", "web/images")
 	r.Static("/js", "web/js")
 	r.StaticFile("/favicon.ico", "web/favicon.ico")
 	r.StaticFile("/data.json", "internal/romdata/data.json")
+	r.StaticFile("/error.html", "web/error.html")
+	r.StaticFile("/rtdx-password.html", "web/rtdx-password.html")
 
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
 	r.GET("/generate", func(c *gin.Context) {
-		var team []int
-		teamName := c.Query("team")
-		for i := 0; i < 12; i++ {
-			if i < len(teamName) {
-				team = append(team, strings.Index(romdata.GetRomData().CharmapText, string(teamName[i]))-394)
-				// idk why I have to subtract 394 but it works
-			} else {
-				team = append(team, 0)
-			}
-		}
+		team := c.Query("team")
 		dungeon, _ := strconv.Atoi(c.Query("dungeon"))
 		floor, _ := strconv.Atoi(c.Query("floor"))
 		pokemon, _ := strconv.Atoi(c.Query("pokemon"))
 		gender, _ := strconv.Atoi(c.Query("gender"))
 		reward, _ := strconv.Atoi(c.Query("reward"))
-		data := RescueData{
-			Timestamp: int(time.Now().Unix()),
-			Type:      0,
-			Team:      team,
-			Dungeon:   dungeon,
-			Floor:     floor,
-			Pokemon:   pokemon,
-			Gender:    gender,
-			Reward:    reward,
-		}
+		data := NewRescueData(0, team, dungeon, floor, pokemon, gender, reward)
 		code := data.serialize()
 		var pswd string
 		for _, c := range code {
 			pswd += c
 		}
-		c.Redirect(http.StatusMovedPermanently, "/password?password="+pswd+"&type=0")
+		c.Redirect(http.StatusMovedPermanently, "/rtdx-password.html?password="+pswd+"&type=0")
 	})
 	r.GET("/revival", func(c *gin.Context) {
 		// Read password to get revival value
 		password := c.Query("password")
 		password = strings.ReplaceAll(password, " ", "")
 		if len(password) != 60 || strings.Contains(strings.ToLower(password), "xs") {
-			c.Redirect(http.StatusMovedPermanently, "/error")
+			c.Redirect(http.StatusMovedPermanently, "/error.html")
 		}
 		rc := NewRescueCode(password)
 		info := rc.deserialize()
 		// go to error if password is not valid
 		if info.InclChecksum != info.CalcChecksum {
-			c.Redirect(http.StatusMovedPermanently, "/error")
+			c.Redirect(http.StatusMovedPermanently, "/error.html")
 		}
 		// Generate revival password
-		var team []int
-		teamName := c.Query("team")
-		for i := 0; i < 12; i++ {
-			if i < len(teamName) {
-				team = append(team, strings.Index(romdata.GetRomData().CharmapText, string(teamName[i]))-394)
-				// idk why I have to subtract 394 but it works
-			} else {
-				team = append(team, 0)
-			}
-		}
-		data := RescueData{
-			Timestamp: int(time.Now().Unix()),
-			Type:      1,
-			Team:      team,
-			Revive:    info.Revive,
-		}
+		team := c.Query("team")
+		data := NewRescueData(1, team, info.Revive)
 		code := data.serialize()
 		var pswd string
 		for _, c := range code {
 			pswd += c
 		}
-		c.Redirect(http.StatusMovedPermanently, "/password?password="+pswd+"&type=1")
-	})
-	r.GET("/error", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "error.html", gin.H{})
-	})
-	r.GET("/password", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "rtdx-password.html", gin.H{})
+		c.Redirect(http.StatusMovedPermanently, "/rtdx-password.html?password="+pswd+"&type=1")
 	})
 	r.Run(getPort())
 }
