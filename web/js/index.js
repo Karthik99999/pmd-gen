@@ -69,4 +69,25 @@ $(function() {
       pokemonSelect.add(option)
     })
   })
+  // Show/hide "advanced" options
+  var advancedOptions = document.getElementById("advancedOptions")
+  advancedOptions.addEventListener("click", function() {
+    var team = document.getElementById("rescueTeam")
+    var teamName = document.getElementById("rescueTeamName")
+    var pokemon = document.getElementById("pokemonList")
+    var genders = document.getElementById("genders")
+    if (advancedOptions.checked) {  
+      // show "advanced" options, as well as remove default team name    
+      teamName.value = ""
+      team.style.display = ""
+      pokemon.style.display = ""
+      genders.style.display = ""
+    } else {
+      // hide "advanced" options, and put default team name back
+      teamName.value = "pmd-gen"
+      team.style.display = "none"
+      pokemon.style.display = "none"
+      genders.style.display = "none"
+    }
+  })
 })

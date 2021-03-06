@@ -1,6 +1,7 @@
 .card {
   border: none;
-  width: 20rem;
+  width: 100%;
+  max-width: 20rem;
 }
 
 .card-img-top {
@@ -8,8 +9,8 @@
 }
 
 canvas {
-  width: calc(100% * 0.9);
-  height: calc(100% * 0.9);
+  width: 90%;
+  height: 90%;
 }
 
 footer {
