@@ -25,6 +25,7 @@
   <meta name="google-site-verification" content="g7UKjM9Re3VcPqUKFxYPLz42bhGIEyLP7gAqF06WmHw" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 
@@ -138,12 +139,8 @@
           <p>For example: "1f xh pw 4e 8s"</p>
           <form action="revival" method="get">
             <div class="form-group">
-              <label for="password">Rescue password:</label>
-              <textarea type="text" class="form-control" name="password" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="team">Team name (that will "rescue" you):</label>
-              <input type="text" class="form-control" name="team" maxlength="12" placeholder="Poképals" required>
+              <label for="rescuePassword">Rescue password:</label>
+              <textarea type="text" class="form-control" id="rescuePassword" name="password" required></textarea>
             </div>
         </div>
         <div class="modal-footer">
@@ -164,6 +161,7 @@
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
   <script src="./js/index.js"></script>
 </body>
 

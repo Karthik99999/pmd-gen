@@ -60,8 +60,7 @@ func main() {
 			c.Redirect(http.StatusMovedPermanently, "/error.html")
 		}
 		// Generate revival password
-		team := c.Query("team")
-		data := NewRescueData(1, team, info.Revive)
+		data := NewRescueData(1, "pmd-gen", info.Revive)
 		code := data.serialize()
 		var pswd string
 		for _, c := range code {
