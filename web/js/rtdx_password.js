@@ -4,7 +4,7 @@ window.onload = function() {
 	var query = window.location.search
 	var params = new URLSearchParams(query)
 	// split url into array
-	var password = params.get("password").replace(/\s/g, "").match(/.{1,2}/g)
+	var password = params.get("pswd").replace(/\s/g, "").match(/.{1,2}/g)
 	var canvas = document.getElementById("password")
 	var ctx = canvas.getContext("2d")
 	// Pick which background to use depending on password type

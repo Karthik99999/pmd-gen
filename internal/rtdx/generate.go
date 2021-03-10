@@ -1,4 +1,4 @@
-package main
+package rtdx
 
 import (
 	"strings"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
 	"github.com/Karthik99999/pmd-gen/internal/utils"
-	)
+)
 
 // rescueData contains info for a rescue/revival password
 type rescueData struct {
@@ -99,7 +99,7 @@ func encrypt(data []int) []int {
 	return encrypted
 }
 
-func (rd *rescueData) serialize() []string {
+func (rd *rescueData) Serialize() []string {
 	writer := utils.NewBitstreamWriter(8)
 	writer.Write(rd.Timestamp, 32)
 	writer.Write(rd.Type, 1)

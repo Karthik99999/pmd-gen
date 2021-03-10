@@ -1,0 +1,58 @@
+{{define "rtdx-rescue.tmpl"}}
+<div class="modal fade" id="rtdx-friend-rescue" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="rtdx-friend-rescue" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rescueModalTitle">Rescue Team DX Friend Rescue Password Generator</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="rtdx-generate" method="get">
+          <div class="form-group" id="rescueTeam" style="display: none;">
+            <label for="rescueTeamName">Team name:</label>
+            <input type="text" class="form-control" id="rescueTeamName" name="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required>
+          </div>
+          <div class="form-group">
+            <label for="rtdx-dungeons">Dungeon:</label>
+            <select class="form-control" id="rtdx-dungeons" name="dungeon" required></select>
+          </div>
+          <div class="form-group">
+            <label for="floor">Floor:</label>
+            <input type="number" class="form-control" id="rtdx-floor" name="floor" min="1" max="3" required></input>
+          </div>
+          <div class="form-group" id="pokemonList" style="display: none;">
+            <label for="rtdx-pokemon">Pokémon:</label>
+            <select class="form-control" id="rtdx-pokemon" name="pokemon" required></select>
+          </div>
+          <div class="form-group" id="genders" style="display: none;">
+            <label for="gender">Gender:</label>
+            <select class="form-control" id="gender" name="gender" required>
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+              <option value="2">Genderless</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rewards">Reward:</label>
+            <select class="form-control" id="rewards" name="reward" required>
+              <option value="3">Deluxe</option>
+              <option value="2">Special</option>
+              <option value="1">Regular</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <div class="custom-control custom-checkbox custom-control-inline mr-auto">
+          <input type="checkbox" class="custom-control-input" id="advancedOptions">
+          <label class="custom-control-label" for="advancedOptions">Advanced Options</label>
+        </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Generate</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{end}}

@@ -1,4 +1,4 @@
-package main
+package rtdx
 
 import (
 	"strings"
@@ -15,12 +15,12 @@ type rescueCode struct {
 func NewRescueCode(code string) *rescueCode {
 	rescueCode := &rescueCode{}
 	code = strings.ReplaceAll(code, " ", "")
-	var codef string
+	var codeToSplit string
 	for i := 0; i < len(code); i += 2 {
-		codef += string(code[i:i+2] + " ")
+		codeToSplit += string(code[i:i+2] + " ")
 	}
-	codef = strings.TrimSpace(codef)
-	rescueCode.code = strings.Split(codef, " ")
+	codeToSplit = strings.TrimSpace(codeToSplit)
+	rescueCode.code = strings.Split(codeToSplit, " ")
 	return rescueCode
 }
 
@@ -111,7 +111,7 @@ type rescueInfo struct {
 	Revive       int   `json:"revive"`
 }
 
-func (rc *rescueCode) deserialize() *rescueInfo {
+func (rc *rescueCode) Deserialize() *rescueInfo {
 	unshuffled := unshuffle(rc.code)
 	indexes := toIndexes(unshuffled)
 	bitpacked := bitpack(indexes)
