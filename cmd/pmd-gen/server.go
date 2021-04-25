@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
@@ -21,17 +23,21 @@ func getPort() string {
 func main() {
 	r := gin.Default()
 	// Static files
-	files := []string{
-		"web/index.tmpl",
-		"web/modals/rtdx-rescue.tmpl",
-		"web/modals/rtdx-revival.tmpl",
+	files := []string{"web/index.tmpl"}
+	modals, _ := ioutil.ReadDir("web/modals")
+	lists, _ := ioutil.ReadDir("web/lists")
+	for _, m := range modals {
+		files = append(files, fmt.Sprintf("web/modals/%s", m.Name()))
 	}
+	for _, l := range lists {
+		files = append(files, fmt.Sprintf("web/lists/%s", l.Name()))
+	}
+	fmt.Println(files)
 	r.LoadHTMLFiles(files...)
 	r.Static("/css", "web/css")
 	r.Static("/images", "web/images")
 	r.Static("/js", "web/js")
 	r.StaticFile("/favicon.ico", "web/favicon.ico")
-	r.StaticFile("/data.json", "internal/romdata/data.json")
 	r.StaticFile("/error", "web/error.html")
 	r.StaticFile("/rtdx-password", "web/rtdx-password.html")
 
