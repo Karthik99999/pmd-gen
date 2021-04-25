@@ -32,7 +32,6 @@ func main() {
 	for _, l := range lists {
 		files = append(files, fmt.Sprintf("web/lists/%s", l.Name()))
 	}
-	fmt.Println(files)
 	r.LoadHTMLFiles(files...)
 	r.Static("/css", "web/css")
 	r.Static("/images", "web/images")
