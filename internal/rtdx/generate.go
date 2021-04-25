@@ -3,8 +3,6 @@ package rtdx
 import (
 	"strings"
 	"time"
-
-	"github.com/Karthik99999/pmd-gen/internal/romdata"
 )
 
 // rescueData contains info for a rescue/revival password
@@ -28,7 +26,7 @@ func NewRescueData(pswdType int, teamName string, info ...int) *rescueData {
 	var team []int
 	for i := 0; i < 12; i++ {
 		if i < len(teamName) {
-			team = append(team, strings.Index(romdata.GetRomData().CharmapText, string(teamName[i]))-394)
+			team = append(team, strings.Index(GetRomData().CharmapText, string(teamName[i]))-394)
 			// idk why I have to subtract 394 but it works
 		} else {
 			team = append(team, 0)

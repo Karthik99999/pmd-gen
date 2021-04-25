@@ -2,8 +2,6 @@ package rtdx
 
 import (
 	"strings"
-
-	"github.com/Karthik99999/pmd-gen/internal/romdata"
 )
 
 type rescueCode struct {
@@ -89,7 +87,7 @@ func checksum(code []int) int {
 func crc32(bytes string) int {
 	sum := 0xFFFFFFFF
 	for i := 0; i < len(bytes); i++ {
-		sum = romdata.GetRomData().Crc32Table[(sum&0xFF)^int(bytes[i])] ^ (sum >> 8)
+		sum = GetRomData().Crc32Table[(sum&0xFF)^int(bytes[i])] ^ (sum >> 8)
 	}
 	return sum ^ 0xFFFFFFFF
 }
@@ -141,7 +139,7 @@ func (rc *rescueCode) Deserialize() *rescueInfo {
 		indexes := toIndexes(rc.code)
 		charcode := ""
 		for _, x := range indexes {
-			charcode += string([]rune(romdata.GetRomData().Charmap)[x])
+			charcode += string([]rune(GetRomData().Charmap)[x])
 		}
 		info.Revive = crc32(charcode) & 0x3FFFFFFF
 	} else {

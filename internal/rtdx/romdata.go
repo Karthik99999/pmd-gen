@@ -1,4 +1,4 @@
-package romdata
+package rtdx
 
 import (
 	"encoding/json"
