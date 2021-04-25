@@ -1,4 +1,4 @@
-package utils
+package rtdx
 
 type bitstreamReader struct {
 	bytes    []int

@@ -1,4 +1,4 @@
-package utils
+package rtdx
 
 // dotnet seeded rng implementation
 // For test cases

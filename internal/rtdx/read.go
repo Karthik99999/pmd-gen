@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
-	"github.com/Karthik99999/pmd-gen/internal/utils"
 )
 
 type rescueCode struct {
@@ -56,7 +55,7 @@ func toIndexes(code []string) []int {
 // bitpack the code
 func bitpack(indexes []int) []int {
 	var newcode []int
-	reader := utils.NewBitstreamReader(indexes, 6)
+	reader := NewBitstreamReader(indexes, 6)
 	for reader.Remaining() {
 		newcode = append(newcode, reader.Read(8))
 	}
@@ -67,7 +66,7 @@ func bitpack(indexes []int) []int {
 func decrypt(bitpacked []int) []int {
 	newcode := []int{bitpacked[0], bitpacked[1]}
 	seed := bitpacked[0] | bitpacked[1]<<8
-	rng := utils.NewRNG(seed)
+	rng := NewRNG(seed)
 	for i := 2; i < len(bitpacked); i++ {
 		rand := rng.NextInt()
 		newcode = append(newcode, (bitpacked[i]-rand)&0xFF)
@@ -122,7 +121,7 @@ func (rc *rescueCode) Deserialize() *rescueInfo {
 		CalcChecksum: checksum(code[1:]),
 	}
 
-	reader := utils.NewBitstreamReader(code[1:], 8)
+	reader := NewBitstreamReader(code[1:], 8)
 	info.Timestamp = reader.Read(32)
 	info.Type = reader.Read(1)
 	info.Unknown1 = reader.Read(1)

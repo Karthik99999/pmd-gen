@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/Karthik99999/pmd-gen/internal/romdata"
-	"github.com/Karthik99999/pmd-gen/internal/utils"
 )
 
 // rescueData contains info for a rescue/revival password
@@ -78,7 +77,7 @@ func toSymbols(bitstream []int) []string {
 // bitpack the code
 func bitunpack(bytearr []int) []int {
 	var bitstream []int
-	reader := utils.NewBitstreamReader(bytearr, 8)
+	reader := NewBitstreamReader(bytearr, 8)
 	for reader.Remaining() {
 		bitstream = append(bitstream, reader.Read(6))
 	}
@@ -89,7 +88,7 @@ func bitunpack(bytearr []int) []int {
 func encrypt(data []int) []int {
 	encrypted := []int{data[0], data[1]}
 	seed := data[0] | data[1]<<8
-	rng := utils.NewRNG(seed)
+	rng := NewRNG(seed)
 	for i := 2; i < len(data); i++ {
 		rand := rng.NextInt()
 		encrypted = append(encrypted, (data[i]+rand)&0xFF)
@@ -100,7 +99,7 @@ func encrypt(data []int) []int {
 }
 
 func (rd *rescueData) Serialize() []string {
-	writer := utils.NewBitstreamWriter(8)
+	writer := NewBitstreamWriter(8)
 	writer.Write(rd.Timestamp, 32)
 	writer.Write(rd.Type, 1)
 	writer.Write(0, 1) // Unknown, Can be either 0 or 1
