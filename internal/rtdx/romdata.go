@@ -36,7 +36,7 @@ type romdata struct {
 // GetRomData reads the json file containing game data
 // and returns the romdata struct containing said data
 func GetRomData() *romdata {
-	file, _ := ioutil.ReadFile("internal/romdata/data.json")
+	file, _ := ioutil.ReadFile("internal/rtdx/data.json")
 	data := &romdata{}
 	_ = json.Unmarshal(file, &data)
 	return data
