@@ -2,7 +2,6 @@ package rtdx
 
 import (
 	"strings"
-	"time"
 )
 
 // rescueData contains info for a rescue/revival password
@@ -21,7 +20,7 @@ type rescueData struct {
 // NewRescueData creates a new instance of RescueData
 func NewRescueData(pswdType int, teamName string, info ...int) *rescueData {
 	data := &rescueData{}
-	data.Timestamp = int(time.Now().Unix())
+	data.Timestamp = info[0]
 	data.Type = pswdType
 	var team []int
 	for i := 0; i < 12; i++ {
@@ -35,13 +34,13 @@ func NewRescueData(pswdType int, teamName string, info ...int) *rescueData {
 	data.Team = team
 
 	if pswdType == 0 {
-		data.Dungeon = info[0]
-		data.Floor = info[1]
-		data.Pokemon = info[2]
-		data.Gender = info[3]
-		data.Reward = info[4]
+		data.Dungeon = info[1]
+		data.Floor = info[2]
+		data.Pokemon = info[3]
+		data.Gender = info[4]
+		data.Reward = info[5]
 	} else {
-		data.Revive = info[0]
+		data.Revive = info[1]
 	}
 
 	return data
