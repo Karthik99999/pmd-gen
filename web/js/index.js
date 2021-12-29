@@ -1,4 +1,9 @@
 window.onload = function() {
+	// Set timestamps
+	var timestamps = document.querySelectorAll('[name="timestamp"]')
+	for (var timestamp of timestamps) {
+		timestamp.value = Math.floor(Date.now() / 1000)
+	}
 	// Modify max floor depending on dungeon selected
 	var dungeonSelect = document.getElementById("rtdx-dungeons")
 	var floorInput = document.getElementById("rtdx-floor")
@@ -17,9 +22,9 @@ window.onload = function() {
 	// Show/hide "advanced" options
 	var advancedOptions = document.getElementById("advancedOptions")
 	advancedOptions.addEventListener("click", function() {
-		var team = document.getElementById("rescueTeam")
-		var teamName = document.getElementById("rescueTeamName")
-		var pokemon = document.getElementById("rtdx-pokemonlist")
+		var team = document.getElementById("rtdx-rescue-team")
+		var teamName = document.getElementById("rtdx-rescue-team-name")
+		var pokemon = document.getElementById("rtdx-pokemon")
 		var genders = document.getElementById("rtdx-genders")
 		if (advancedOptions.checked) {
 			// show "advanced" options, as well as remove default team name    

@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Karthik99999/pmd-gen/internal/rtdx"
 	"github.com/gin-gonic/gin"
@@ -47,7 +46,7 @@ func main() {
 
 	r.GET("/rtdx-generate", func(c *gin.Context) {
 		team := c.Query("team")
-		timestamp := int(time.Now().Unix())
+		timestamp, _ := strconv.Atoi(c.Query("timestamp"))
 		dungeon, _ := strconv.Atoi(c.Query("dungeon"))
 		floor, _ := strconv.Atoi(c.Query("floor"))
 		pokemon, _ := strconv.Atoi(c.Query("pokemon"))
@@ -77,7 +76,7 @@ func main() {
 		}
 		// Generate revival password
 		team := c.Query("team")
-		timestamp := int(time.Now().Unix())
+		timestamp, _ := strconv.Atoi(c.Query("timestamp"))
 		data := rtdx.NewRescueData(1, team, timestamp, info.Revive)
 		code := data.Serialize()
 		var pswd string

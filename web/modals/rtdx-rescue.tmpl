@@ -10,29 +10,33 @@
       </div>
       <div class="modal-body">
         <form action="rtdx-generate" method="get">
-          <div class="form-group" id="rescueTeam" style="display: none;">
-            <label for="rescueTeamName">Team name:</label>
-            <input type="text" class="form-control" id="rescueTeamName" name="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required>
+          <div class="form-group" id="rtdx-rescue-timestamp" style="display: none;">
+            <label>Timestamp:</label>
+            <input type="number" class="form-control" name="timestamp" required>
+          </div>
+          <div class="form-group" id="rtdx-rescue-team" style="display: none;">
+            <label>Team name:</label>
+            <input type="text" class="form-control" id="rtdx-rescue-team-name" name="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required>
           </div>
           <div class="form-group">
-            <label for="rtdx-dungeons">Dungeon:</label>
+            <label>Dungeon:</label>
             <select class="form-control" id="rtdx-dungeons" name="dungeon" required>
             {{template "rtdx-dungeons.tmpl" .}}
             </select>
           </div>
           <div class="form-group">
-            <label for="floor">Floor:</label>
+            <label>Floor:</label>
             <input type="number" class="form-control" id="rtdx-floor" name="floor" min="1" max="3" required></input>
           </div>
-          <div class="form-group" id="rtdx-pokemonlist" style="display: none;">
-            <label for="rtdx-pokemon">Pokémon:</label>
-            <select class="form-control" id="rtdx-pokemon" name="pokemon" required>
+          <div class="form-group" id="rtdx-pokemon" style="display: none;">
+            <label>Pokémon:</label>
+            <select class="form-control" name="pokemon" required>
             {{template "rtdx-pokemon.tmpl" .}}
             </select>
           </div>
           <div class="form-group" id="rtdx-genders" style="display: none;">
-            <label for="gender">Gender:</label>
-            <select class="form-control" id="gender" name="gender" required>
+            <label>Gender:</label>
+            <select class="form-control" name="gender" required>
               <option value="0">Male</option>
               <option value="1">Female</option>
               <option value="2">Genderless</option>
