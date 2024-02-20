@@ -2,6 +2,9 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 
+	let mounted = false;
+	onMount(() => (mounted = true));
+
 	export let password: string;
 	export let type: string;
 	let canvas: HTMLCanvasElement;
@@ -15,7 +18,7 @@
 		});
 	};
 
-	onMount(async () => {
+	const drawPassword = async () => {
 		const ctx = canvas.getContext('2d')!;
 
 		const background = await loadImage(type);
@@ -72,14 +75,18 @@
 		drawCharacter(characters[27], 691, 135);
 		drawCharacter(characters[28], 742, 135);
 		drawCharacter(characters[29], 793, 135);
-	});
+	};
+
+	$: if (password && mounted) drawPassword();
 </script>
 
 <canvas bind:this={canvas} id="password" width="912" height="233" />
 
 <style>
 	canvas {
-		width: 90%;
-		height: 90%;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		padding-top: 2%;
 	}
 </style>

@@ -39,11 +39,6 @@
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
-{#key password}
-	{#if password}
-		<br />
-		<center>
-			<PasswordImage {password} type="revival" />
-		</center>
-	{/if}
-{/key}
+{#if password}
+	<PasswordImage {password} type="revival" />
+{/if}

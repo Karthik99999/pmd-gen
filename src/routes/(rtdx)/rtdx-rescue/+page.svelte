@@ -18,7 +18,7 @@
 		}
 	}
 
-	function changeMaxFloors(e: Event) {
+	function changeMaxFloors() {
 		const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
 		const maxFloors = RTDX.Data.dungeons.get(dungeon).floors;
 		const floor = document.getElementById('floor') as HTMLInputElement;
@@ -62,11 +62,6 @@
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
-{#key password}
-	{#if password}
-		<br />
-		<center>
-			<PasswordImage {password} type="rescue" />
-		</center>
-	{/if}
-{/key}
+{#if password}
+	<PasswordImage {password} type="rescue" />
+{/if}
