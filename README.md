@@ -24,9 +24,9 @@ You can preview the production build with `bun run preview`.
 ## TODO
 
 - Add support for older games
-	- Red/Blue Rescue Team
-	- Explorers of Time/Darkness
-	- Explorers of Sky
+  - Red/Blue Rescue Team
+  - Explorers of Time/Darkness
+  - Explorers of Sky
 
 ## License
 
