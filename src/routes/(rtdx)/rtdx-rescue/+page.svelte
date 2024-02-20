@@ -20,8 +20,10 @@
 
     function changeMaxFloors(e: Event) {
         const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
+        const maxFloors = RTDX.Data.dungeons.get(dungeon).floors;
         const floor = document.getElementById('floor') as HTMLInputElement;
-        floor.max = RTDX.Data.dungeons.get(dungeon).floors.toString();
+        floor.max = maxFloors.toString();
+        floor.placeholder = `1-${maxFloors}`;
     }
 </script>
 
@@ -46,7 +48,7 @@
     </div>
     <div class="form-group">
         <label for="floor">Floor:</label>
-        <input type="number" class="form-control" id="floor" min="1" max="3" required>
+        <input type="number" class="form-control" id="floor" min="1" max="3" placeholder="1-3" required>
     </div>
     <div class="form-group">
         <label for="pokemon">Pokémon:</label>
