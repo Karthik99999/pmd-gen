@@ -6,19 +6,19 @@
 	export let type: string;
 	let canvas: HTMLCanvasElement;
 
-	const loadImage = (src: string) => {
+	const loadImage = (name: string) => {
 		return new Promise<HTMLImageElement>((resolve, reject) => {
 			const img = new Image();
 			img.onload = () => resolve(img);
 			img.onerror = reject;
-			img.src = `${base}/${src}`;
+			img.src = `${base}/rtdx-password/${name}.png`;
 		});
 	};
 
 	onMount(async () => {
 		const ctx = canvas.getContext('2d')!;
 
-		const background = await loadImage(`/rtdx-password/${type}.png`);
+		const background = await loadImage(type);
 		ctx.drawImage(background, 0, 0, 912, 233);
 
 		const drawCharacter = async (char: string, x: number, y: number) => {
@@ -29,12 +29,12 @@
 				e: 'emerald',
 				s: 'star',
 			};
-			const symbol = await loadImage(`/rtdx-password/${symbols[char.charAt(1)]}.png`);
+			const symbol = await loadImage(symbols[char.charAt(1)]);
 			ctx.drawImage(symbol, x, y, 40, 40);
 
 			const xc = x + 10;
 			const yc = y + 10;
-			const character = await loadImage(`/rtdx-password/${char.charAt(0)}.png`);
+			const character = await loadImage(char.charAt(0));
 			ctx.drawImage(character, xc, yc, 20, 20);
 		};
 
