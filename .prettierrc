@@ -1,0 +1,20 @@
+{
+	"trailingComma": "es5",
+	"useTabs": true,
+	"semi": true,
+	"singleQuote": true,
+	"printWidth": 120,
+	"plugins": ["prettier-plugin-svelte"],
+	"overrides": [
+		{
+			"files": ["*.html", "*.svelte"],
+			"options": {
+				"printWidth": 600
+			}
+		},
+		{
+			"files": "*.svelte",
+			"options": { "parser": "svelte" }
+		}
+	]
+}

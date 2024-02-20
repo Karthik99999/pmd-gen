@@ -9,18 +9,18 @@ function splitCode(code: string): string[] {
 	code = code.replace(' ', '').toLowerCase();
 	let codeToSplit = '';
 	for (let i = 0; i < code.length; i += 2) {
-		codeToSplit += code.slice(i, i+2) + ' ';
+		codeToSplit += code.slice(i, i + 2) + ' ';
 	}
 	return codeToSplit.trim().split(' ');
 }
 
-/** 
+/**
  * Unshuffles the password symbols
  */
 function unshuffle(code: string[]): string[] {
 	const unshuffledIndex = [
-        3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
-    ];
+		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
+	];
 	const unshuffled: string[] = [];
 	for (let i = 0; i < 30; i++) {
 		unshuffled[i] = code[unshuffledIndex[i]];
@@ -60,13 +60,13 @@ function bitpack(indexes: number[]): number[] {
  */
 function decrypt(code: number[]): number[] {
 	const newcode = code.slice(0, 2);
-	const seed = code[0] | code[1] << 8;
+	const seed = code[0] | (code[1] << 8);
 	const rng = new RNG(seed);
 	for (const c of code.slice(2)) {
 		const rand = rng.next();
-		newcode.push((c - rand) & 0xFF);
+		newcode.push((c - rand) & 0xff);
 	}
-	const remain = 8 - (code.length * 8 % 6);
+	const remain = 8 - ((code.length * 8) % 6);
 	newcode[newcode.length - 1] &= (1 << remain) - 1;
 	return newcode;
 }
@@ -90,8 +90,8 @@ interface PasswordData {
 	revive: number;
 }
 
-type RescueData = PasswordData & {type: 0};
-type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward' | 'unknown2'> & {type: 1};
+type RescueData = PasswordData & { type: 0 };
+type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward' | 'unknown2'> & { type: 1 };
 
 /**
  * Deserializes a password and returns relevant data
@@ -100,21 +100,21 @@ type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender'
  * to represent the icons from the game. The letter or number
  * on the icon should come first, then a letter represnting the
  * shape on the icon should come right after.
- * 
+ *
  * Fire - F
- * 
+ *
  * Heart - H
- * 
+ *
  * Water Drop - W
- * 
+ *
  * Emerald - E
- * 
+ *
  * Star - S
- * 
+ *
  * For example, a 1 on top of a water drop should be 1W.
  */
 function deserialize(password: string): RescueData | RevivalData {
-    const passwordArr = splitCode(password);
+	const passwordArr = splitCode(password);
 	const unshuffled = unshuffle(passwordArr);
 	const indexes = toIndexes(unshuffled);
 	const bitpacked = bitpack(indexes);
@@ -144,7 +144,7 @@ function deserialize(password: string): RescueData | RevivalData {
 		for (const i of indexes) {
 			charcode += Data.charmap[i];
 		}
-		const revive = crc32(charcode) & 0x3FFFFFFF;
+		const revive = crc32(charcode) & 0x3fffffff;
 
 		const data: RescueData = {
 			password,
@@ -196,14 +196,14 @@ interface PasswordInfo {
 	revive: number;
 }
 
-type RescueInfo = PasswordInfo & {type: 'Rescue'};
-type RevivalInfo = Omit<PasswordInfo, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward'> & {type: 'Revival'};
+type RescueInfo = PasswordInfo & { type: 'Rescue' };
+type RevivalInfo = Omit<PasswordInfo, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward'> & { type: 'Revival' };
 
 /**
  * Parses the raw password data and returns relevant human-readable data
  */
 function parseData(data: RescueData | RevivalData): RescueInfo | RevivalInfo {
-	const valid = (data.inclChecksum === data.calcChecksum);
+	const valid = data.inclChecksum === data.calcChecksum;
 	let teamName = '';
 	for (const i of data.team) {
 		if (i === 0) break;
@@ -271,17 +271,17 @@ function parseData(data: RescueData | RevivalData): RescueInfo | RevivalInfo {
  * to represent the icons from the game. The letter or number
  * on the icon should come first, then a letter represnting the
  * shape on the icon should come right after.
- * 
+ *
  * Fire - F
- * 
+ *
  * Heart - H
- * 
+ *
  * Water Drop - W
- * 
+ *
  * Emerald - E
- * 
+ *
  * Star - S
- * 
+ *
  * For example, a 1 on top of a water drop should be 1W.
  */
 export function read(password: string): RescueInfo | RevivalInfo {

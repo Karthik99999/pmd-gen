@@ -1,9 +1,9 @@
 <script>
-    import { base } from '$app/paths';
+	import { base } from '$app/paths';
 </script>
 
 <svelte:head>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164742584-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
@@ -14,58 +14,58 @@
 		gtag('js', new Date());
 		gtag('config', 'UA-164742584-1');
 	</script>
-    <title>PMD Gen | Generate passwords for Pokemon Mystery Dungeon</title>
-    <link rel="icon" type="image/x-icon" href="{base}/favicon.ico">
-    <meta name="description" content="A password tool/generator to create friend rescue/revival passwords for Pokemon Mystery Dungeon: Rescue Team DX. More games coming soon.">
+	<title>PMD Gen | Generate passwords for Pokemon Mystery Dungeon</title>
+	<link rel="icon" type="image/x-icon" href="{base}/favicon.ico" />
+	<meta name="description" content="A password tool/generator to create friend rescue/revival passwords for Pokemon Mystery Dungeon: Rescue Team DX. More games coming soon." />
 </svelte:head>
 
-<style>
-    #page-container {
-        position: relative;
-        min-height: 100vh;
-    }
-
-    #content-wrap {
-        padding-bottom: 2.5rem; /* Footer height */
-    }
-
-    footer {
-        text-align: center;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: 4rem;
-    }
-</style>
-
 <div id="page-container">
-    <div id="content-wrap">
-        <!-- Top Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="{base}">PMD Gen</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+	<div id="content-wrap">
+		<!-- Top Navbar -->
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href={base}>PMD Gen</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 
-            <div class="collapse navbar-collapse" id="navbar">
-                <ul class="navbar-nav ml-auto">
-                    <a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px"><i class="fab fa-github" style="color:white"></i></a>
-                </ul>
-            </div>
-        </nav>
-        <!-- Jumbotron -->
-        <div class="container">
-            <div class="col-md-12">
-                <br>
-                <div class="jumbotron" id="jumbotron">
-                    <slot></slot>
-                </div>
-            </div>
-        </div>
-    </div>
-    <footer>
-        © 2024 Karthik99999 | <a href="https://github.com/Karthik99999/pmd-gen" target="_blank">Source</a>
-        <br>
-        All game logos used on this site belong to The Pokémon Company. This site is not affiliated with The Pokémon Company or Spike Chunsoft in any way.
-    </footer>
+			<div class="collapse navbar-collapse" id="navbar">
+				<ul class="navbar-nav ml-auto">
+					<a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px"><i class="fab fa-github" style="color:white"></i></a>
+				</ul>
+			</div>
+		</nav>
+		<!-- Jumbotron -->
+		<div class="container">
+			<div class="col-md-12">
+				<br />
+				<div class="jumbotron" id="jumbotron">
+					<slot />
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer>
+		© 2024 Karthik99999 | <a href="https://github.com/Karthik99999/pmd-gen" target="_blank">Source</a>
+		<br />
+		All game logos used on this site belong to The Pokémon Company. This site is not affiliated with The Pokémon Company or Spike Chunsoft in any way.
+	</footer>
 </div>
+
+<style>
+	#page-container {
+		position: relative;
+		min-height: 100vh;
+	}
+
+	#content-wrap {
+		padding-bottom: 2.5rem; /* Footer height */
+	}
+
+	footer {
+		text-align: center;
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 4rem;
+	}
+</style>

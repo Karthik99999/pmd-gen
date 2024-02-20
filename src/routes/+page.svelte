@@ -2,18 +2,6 @@
 	import { base } from '$app/paths';
 </script>
 
-<style>
-	.card {
-		border: none;
-		width: 100%;
-		max-width: 20rem;
-	}
-
-	.card-img-top {
-		padding: 2%;
-	}
-</style>
-
 <center>
 	<h3>Generators</h3>
 </center>
@@ -28,3 +16,15 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.card {
+		border: none;
+		width: 100%;
+		max-width: 20rem;
+	}
+
+	.card-img-top {
+		padding: 2%;
+	}
+</style>

@@ -18,7 +18,7 @@
 </script>
 
 <center>
-    <a class="btn btn-link" href="{base}">Go back</a>
+	<a class="btn btn-link" href={base}>Go back</a>
 </center>
 
 <p>The password should be entered with two charcters per symbol. The first character being the number/letter on top, and the second being the first letter of the shape.</p>
@@ -35,15 +35,15 @@
 	</div>
 	<div class="form-group">
 		<label for="team">Team name (that will "rescue" you):</label>
-		<input type="text" class="form-control" id="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required>
+		<input type="text" class="form-control" id="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required />
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
 {#key password}
-    {#if password}
-        <br>
-        <center>
-            <PasswordImage {password} type="revival" />
-        </center>
-    {/if}
+	{#if password}
+		<br />
+		<center>
+			<PasswordImage {password} type="revival" />
+		</center>
+	{/if}
 {/key}

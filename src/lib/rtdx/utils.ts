@@ -4,10 +4,11 @@
 
 import RomData from './romdata';
 
-/** 
+/**
  * List of symbols
  * (xs is not included since it is never used in passwords)
  */
+// prettier-ignore
 export const symbols = [
     '1f', '2f', '3f', '4f', '5f', '6f', '7f', '8f', '9f', 'pf', 'mf', 'df', 'xf',
 	'1h', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'ph', 'mh', 'dh', 'xh',
@@ -21,74 +22,74 @@ export function checksum(code: number[]): number {
 	for (const b of code) {
 		sum += b;
 	}
-	const checksum = ~(sum + (sum >> 8)) & 0xFF;
+	const checksum = ~(sum + (sum >> 8)) & 0xff;
 	return checksum;
 }
 
 export function crc32(bytes: string): number {
-	let sum = 0xFFFFFFFF;
+	let sum = 0xffffffff;
 	for (let i = 0; i < bytes.length; i++) {
-		sum = RomData.crc32table[(sum & 0xFF) ^ Number(bytes[i])] ^ (sum >> 8);
+		sum = RomData.crc32table[(sum & 0xff) ^ Number(bytes[i])] ^ (sum >> 8);
 	}
-	return sum ^ 0xFFFFFFFF;
+	return sum ^ 0xffffffff;
 }
 
-/** 
+/**
  * dotnet seeded rng implementation
- * 
+ *
  * For test cases
  * https://docs.microsoft.com/en-us/dotnet/api/system.random.-ctor?view=netframework-4.8#System_Random__ctor_System_Int32_
- * 
+ *
  * Based off
  * https://github.com/mid-kid/pmdrtdx_passwords/blob/26e067a42dc2bf62cd45522ee95fabdbd5b95630/password.py#L7
  */
 export class RNG {
-    i1: number;
-    i2: number;
-    state: number[];
+	i1: number;
+	i2: number;
+	state: number[];
 
-    constructor(seed: number) {
-        seed = 0x9A4EC86 - seed;
-        this.state = [];
-        this.state[0] = 0;
-        this.state[55] = seed;
+	constructor(seed: number) {
+		seed = 0x9a4ec86 - seed;
+		this.state = [];
+		this.state[0] = 0;
+		this.state[55] = seed;
 
-        this.i1 = 0;
-        this.i2 = 31; // 21 for normal use cases
+		this.i1 = 0;
+		this.i2 = 31; // 21 for normal use cases
 
-        let value = 1;
-        for (let i = 1; i < 55; i++) {
-            this.state[(i * 21) % 55] = value;
-            const temp = seed - value;
-            seed = value;
-            value = ((temp >> 31) & 0x7FFFFFFF) + temp;
-        }
+		let value = 1;
+		for (let i = 1; i < 55; i++) {
+			this.state[(i * 21) % 55] = value;
+			const temp = seed - value;
+			seed = value;
+			value = ((temp >> 31) & 0x7fffffff) + temp;
+		}
 
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 56; j++) {
-                const index = (((j + 30) & 0xFF) % 55) + 1;
-                const temp = this.state[j] - this.state[index];
-                this.state[j] = ((temp >> 31) & 0x7FFFFFFF) + temp;
-            }
-        }
-    }
-    /**
-     * Advances the rng
-     */
-    next(): number {
-        this.i1++;
-        this.i2++;
-        if (this.i1 > 55) {
-            this.i1 = 1;
-        }
-        if (this.i2 > 55) {
-            this.i2 = 1;
-        }
-        let result = this.state[this.i1] - this.state[this.i2];
-        if (result < 0) {
-            result += 0x7FFFFFFF;
-        }
-        this.state[this.i1] = result;
-        return result;
-    }
+		for (let i = 0; i < 4; i++) {
+			for (let j = 0; j < 56; j++) {
+				const index = (((j + 30) & 0xff) % 55) + 1;
+				const temp = this.state[j] - this.state[index];
+				this.state[j] = ((temp >> 31) & 0x7fffffff) + temp;
+			}
+		}
+	}
+	/**
+	 * Advances the rng
+	 */
+	next(): number {
+		this.i1++;
+		this.i2++;
+		if (this.i1 > 55) {
+			this.i1 = 1;
+		}
+		if (this.i2 > 55) {
+			this.i2 = 1;
+		}
+		let result = this.state[this.i1] - this.state[this.i2];
+		if (result < 0) {
+			result += 0x7fffffff;
+		}
+		this.state[this.i1] = result;
+		return result;
+	}
 }

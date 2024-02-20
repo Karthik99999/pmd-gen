@@ -12,8 +12,8 @@
 			img.onload = () => resolve(img);
 			img.onerror = reject;
 			img.src = `${base}/${src}`;
-		})
-	}
+		});
+	};
 
 	onMount(async () => {
 		const ctx = canvas.getContext('2d')!;
@@ -22,13 +22,13 @@
 		ctx.drawImage(background, 0, 0, 912, 233);
 
 		const drawCharacter = async (char: string, x: number, y: number) => {
-			const symbols: {[k: string]: string} = {
-				"f": "fire",
-				"h": "heart",
-				"w": "water",
-				"e": "emerald",
-				"s": "star",
-			}
+			const symbols: { [k: string]: string } = {
+				f: 'fire',
+				h: 'heart',
+				w: 'water',
+				e: 'emerald',
+				s: 'star',
+			};
 			const symbol = await loadImage(`/rtdx-password/${symbols[char.charAt(1)]}.png`);
 			ctx.drawImage(symbol, x, y, 40, 40);
 
@@ -37,7 +37,7 @@
 			const character = await loadImage(`/rtdx-password/${char.charAt(0)}.png`);
 			ctx.drawImage(character, xc, yc, 20, 20);
 		};
-		
+
 		const characters = password.match(/.{1,2}/g)!;
 		// First row
 		drawCharacter(characters[0], 68, 70);
@@ -75,11 +75,11 @@
 	});
 </script>
 
+<canvas bind:this={canvas} id="password" width="912" height="233" />
+
 <style>
 	canvas {
-        width: 90%;
-        height: 90%;
-    }
+		width: 90%;
+		height: 90%;
+	}
 </style>
-
-<canvas bind:this={canvas} id="password" width="912" height="233" />

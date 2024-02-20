@@ -3,13 +3,13 @@ import { symbols, checksum, RNG } from './utils';
 import { read } from './read';
 import { Data } from './data';
 
-/** 
+/**
  * Dhuffles the password symbols
  */
 function shuffle(code: string[]): string[] {
 	const unshuffledIndex = [
-        3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
-    ];
+		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
+	];
 	const shuffled: string[] = [];
 	for (let i = 0; i < 30; i++) {
 		shuffled[unshuffledIndex[i]] = code[i];
@@ -45,13 +45,13 @@ function unpack(bitstream: number[]): number[] {
  */
 function encrypt(code: number[]): number[] {
 	const newcode = code.slice(0, 2);
-	const seed = code[0] | code[1] << 8;
+	const seed = code[0] | (code[1] << 8);
 	const rng = new RNG(seed);
 	for (const c of code.slice(2)) {
 		const rand = rng.next();
-		newcode.push((c + rand) & 0xFF);
+		newcode.push((c + rand) & 0xff);
 	}
-	const remain = 8 - (code.length * 8 % 6);
+	const remain = 8 - ((code.length * 8) % 6);
 	newcode[newcode.length - 1] &= (1 << remain) - 1;
 	return newcode;
 }
@@ -80,11 +80,11 @@ interface PasswordData {
 	revive: number;
 }
 
-type RescueData = Omit<PasswordData, 'revive'> & {type: 0};
-type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward'> & {type: 1};
+type RescueData = Omit<PasswordData, 'revive'> & { type: 0 };
+type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward'> & { type: 1 };
 
 function serialize(data: RescueData | RevivalData): string {
-    const writer = new BitstreamWriter(8);
+	const writer = new BitstreamWriter(8);
 	writer.write(data.timestamp, 32);
 	writer.write(data.type, 1);
 	writer.write(0, 1); // Unknown, Can be either 0 or 1
@@ -119,7 +119,12 @@ function serialize(data: RescueData | RevivalData): string {
  * Generates a rescue password. The timestamp, gender of the pokemon being rescued, and the reward type
  * are all hardcoded, since you rarely would want to change them.
  */
-export function generateRescue(dungeonNameOrIndex: string | number, floor: number, teamName = 'pmd-gen', pokemonNameOrIndex: string | number = 1): string {
+export function generateRescue(
+	dungeonNameOrIndex: string | number,
+	floor: number,
+	teamName = 'pmd-gen',
+	pokemonNameOrIndex: string | number = 1
+): string {
 	if (teamName.length < 1 || teamName.length > 12) throw new Error('Team name must be between 1 and 12 characters');
 	const team: number[] = [];
 	for (const char of teamName) {
