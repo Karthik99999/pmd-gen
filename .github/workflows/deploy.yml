@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Deploy to GitHub Pages
 on:
   push:
     branches:
@@ -19,15 +19,17 @@ jobs:
     - uses: oven-sh/setup-bun@v1
       with:
         bun-version: 1.0.x
+    - name: Install Dependencies
+      run: bun install
     - name: Build
-      run: |
-        bun install
-        bun run build
-    - name: Upload artifact for GitHub Pages
+      env:
+        BASE_PATH: '/${{ github.event.repository.name }}'
+      run: bun run build
+    - name: Upload Artifacts
       uses: actions/upload-pages-artifact@v2
       with:
         path: 'build'
     - uses: actions/configure-pages@v3
-    - name: Deploy to GitHub Pages
+    - name: Deploy
       id: deployment
       uses: actions/deploy-pages@v2
