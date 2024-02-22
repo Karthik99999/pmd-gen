@@ -17,13 +17,22 @@ export const symbols = [
 	'1s', '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'ps', 'ms', 'ds',
 ];
 
-export function checksum(code: number[]): number {
-	let sum = 0;
-	for (const b of code) {
-		sum += b;
+export function checksum(code: number[]) {
+	let sum = code[0]
+	for (let x = 1; x < Math.floor((code.length - 1) / 2) * 2; x += 2) {
+		sum += code[x] | (code[x + 1] << 8);
 	}
-	const checksum = ~(sum + (sum >> 8)) & 0xff;
-	return checksum;
+	if (code.length % 2 === 0) {
+		sum += code[code.length - 1];
+	}
+
+	sum = ((sum >> 16) & 0xFFFF) + (sum & 0xFFFF);
+	sum += sum >> 16;
+	sum = ((sum >> 8) & 0xFF) + (sum & 0xFF);
+	sum += sum >> 8;
+	sum &= 0xFF;
+	sum ^= 0xFF;
+	return sum;
 }
 
 export function crc32(bytes: string): number {
