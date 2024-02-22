@@ -42,7 +42,7 @@
 		const characters = password.toLowerCase().match(/.{1,2}/g)!;
 		for (let i = 0; i < 30; i++) {
 			const pos = i % 15;
-			const x = 71 + (pos * 54) + (Math.floor(pos / 5) * 8.5);
+			const x = 71 + pos * 54 + Math.floor(pos / 5) * 8.5;
 			const y = 71 + (i >= 15 ? 69 : 0) + (pos >= 5 && pos <= 9 ? 8.5 : 0);
 			drawCharacter(characters[i], x, y);
 		}

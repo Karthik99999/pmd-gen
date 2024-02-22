@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { RTDX } from '$lib';
+	import { RTDX } from '$lib/generators';
 	import PasswordImage from '../PasswordImage.svelte';
 
 	let password: string;

@@ -6,7 +6,7 @@ import { Data } from './data';
  * Splits code string into array
  */
 function splitCode(code: string): string[] {
-	code = code.replace(' ', '').toLowerCase();
+	code = code.replace(/\s/g, '').toLowerCase();
 	let codeToSplit = '';
 	for (let i = 0; i < code.length; i += 2) {
 		codeToSplit += code.slice(i, i + 2) + ' ';
@@ -32,15 +32,7 @@ function unshuffle(code: string[]): string[] {
  * Converts symbols to indexes 0-63
  */
 function toIndexes(code: string[]): number[] {
-	const indexes: number[] = [];
-	for (let i = 0; i < code.length; i++) {
-		for (let j = 0; j < symbols.length; j++) {
-			if (symbols[j] === code[i]) {
-				indexes[i] = j;
-			}
-		}
-	}
-	return indexes;
+	return code.map((c) => symbols.indexOf(c));
 }
 
 /**

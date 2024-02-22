@@ -21,19 +21,15 @@ function shuffle(code: string[]): string[] {
  * Converts indexes to symbols
  */
 function toSymbols(indexes: number[]): string[] {
-	const code: string[] = [];
-	for (const i of indexes) {
-		code.push(symbols[i]);
-	}
-	return code;
+	return indexes.map((i) => symbols[i]);
 }
 
 /**
  * Unpacks the code
  */
-function unpack(bitstream: number[]): number[] {
+function bitunpack(bits: number[]): number[] {
 	const unpacked: number[] = [];
-	const reader = new BitstreamReader(bitstream, 8);
+	const reader = new BitstreamReader(bits, 8);
 	while (reader.remaining()) {
 		unpacked.push(reader.read(6));
 	}
@@ -109,7 +105,7 @@ function serialize(data: RescueData | RevivalData): string {
 	const indexes = writer.finish();
 	indexes.unshift(checksum(indexes));
 	const encrypted = encrypt(indexes);
-	const bitstream = unpack(encrypted);
+	const bitstream = bitunpack(encrypted);
 	const symbols = toSymbols(bitstream);
 	const code = shuffle(symbols);
 	return code.join('');
