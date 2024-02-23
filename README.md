@@ -21,6 +21,12 @@ bun run build
 
 You can preview the production build with `bun run preview`.
 
+## Credits
+
+- [zaksabeast](https://github.com/zaksabeast) - [Rescue Team DX Friend Password Documentation](https://gist.github.com/zaksabeast/fed5730156e26fb3e805e234fcbea60b)
+- [mid-kid](https://github.com/mid-kid) - [pmdrtdx_passwords](https://github.com/mid-kid/pmdrtdx_passwords/), much of the RTDX code is based off of this repo
+- [peteroupc](https://github.com/peteroupc) - Creator of the original Rescue Team generators on Ultimate Pokemon Center
+
 ## TODO
 
 - Add support for older games
