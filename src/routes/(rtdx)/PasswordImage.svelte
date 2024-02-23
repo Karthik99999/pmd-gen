@@ -36,7 +36,16 @@
 			ctx.drawImage(symbol, x, y, 53, 53);
 
 			const character = await loadImage(char.charAt(0));
-			ctx.drawImage(character, x + 13, y + 14, 25, 25);
+			let extraXOffset = 0;
+			switch (char.charAt(0)) {
+				case 'm':
+					extraXOffset = 0.9;
+					break;
+				case 'x':
+					extraXOffset = 0.4;
+					break;
+			}
+			ctx.drawImage(character, x + 13 + extraXOffset, y + 14, 25, 25);
 		};
 
 		const characters = password.toLowerCase().match(/.{1,2}/g)!;
