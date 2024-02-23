@@ -13,14 +13,14 @@
 		const pokemon = parseInt((document.getElementById('pokemon') as HTMLSelectElement).value);
 		try {
 			password = RTDX.generateRescue(dungeon, floor, team, pokemon);
-		} catch {
-			alert('There was an issue generating the password. Check your input for errors.');
+		} catch (e) {
+			alert(e);
 		}
 	}
 
-	function changeMaxFloors() {
+	function updateMaxFloors() {
 		const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
-		const maxFloors = RTDX.Data.dungeons.get(dungeon).floors;
+		const maxFloors = RTDX.data.dungeons.get(dungeon).floors;
 		const floor = document.getElementById('floor') as HTMLInputElement;
 		floor.max = maxFloors.toString();
 		floor.placeholder = `1-${maxFloors}`;
@@ -31,6 +31,8 @@
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>
 
+<h4>Rescue Team DX Rescue Password Generator</h4>
+
 <form on:submit={generate}>
 	<div class="form-group">
 		<label for="team">Team name:</label>
@@ -38,8 +40,8 @@
 	</div>
 	<div class="form-group">
 		<label for="dungeon">Dungeon:</label>
-		<select class="form-control" id="dungeon" on:change={changeMaxFloors} required>
-			{#each RTDX.Data.dungeons.all() as dungeon}
+		<select class="form-control" id="dungeon" on:change={updateMaxFloors} required>
+			{#each RTDX.data.dungeons.all() as dungeon}
 				{#if dungeon.valid}
 					<option value={dungeon.index}>{dungeon.name}</option>
 				{/if}
@@ -53,7 +55,7 @@
 	<div class="form-group">
 		<label for="pokemon">Pokémon:</label>
 		<select class="form-control" id="pokemon" required>
-			{#each RTDX.Data.pokemon.all() as pokemon}
+			{#each RTDX.data.pokemon.all() as pokemon}
 				{#if pokemon.valid}
 					<option value={pokemon.index}>{pokemon.name}</option>
 				{/if}

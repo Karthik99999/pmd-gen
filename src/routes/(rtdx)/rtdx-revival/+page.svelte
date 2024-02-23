@@ -11,8 +11,8 @@
 		const team = (document.getElementById('team') as HTMLInputElement).value;
 		try {
 			password = RTDX.generateRevival(pswd, team);
-		} catch {
-			alert('Invalid rescue password. Check your input for errors.');
+		} catch (e) {
+			alert(e);
 		}
 	}
 </script>
@@ -20,6 +20,8 @@
 <center>
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>
+
+<h4>Rescue Team DX Revival Password Generator</h4>
 
 <p>The password should be entered with two charcters per symbol. The first character being the number/letter on top, and the second being the first letter of the shape.</p>
 <p>F = Fire</p>

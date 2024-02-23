@@ -1,7 +1,7 @@
 import { BitstreamReader, BitstreamWriter } from '../bitstream';
 import { symbols, checksum, RNG } from './utils';
 import { read } from './read';
-import { Data } from './data';
+import Data from './data';
 
 /**
  * Dhuffles the password symbols

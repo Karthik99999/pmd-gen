@@ -1,6 +1,6 @@
 import { BitstreamReader } from '../bitstream';
 import { checksum, crc32, RNG, symbols } from './utils';
-import { Data } from './data';
+import Data from './data';
 
 /**
  * Splits code string into array

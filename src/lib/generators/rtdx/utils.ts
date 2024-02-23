@@ -18,7 +18,7 @@ export const symbols = [
 ];
 
 export function checksum(code: number[]) {
-	let sum = code[0]
+	let sum = code[0];
 	for (let x = 1; x < Math.floor((code.length - 1) / 2) * 2; x += 2) {
 		sum += code[x] | (code[x + 1] << 8);
 	}
@@ -26,12 +26,12 @@ export function checksum(code: number[]) {
 		sum += code[code.length - 1];
 	}
 
-	sum = ((sum >> 16) & 0xFFFF) + (sum & 0xFFFF);
+	sum = ((sum >> 16) & 0xffff) + (sum & 0xffff);
 	sum += sum >> 16;
-	sum = ((sum >> 8) & 0xFF) + (sum & 0xFF);
+	sum = ((sum >> 8) & 0xff) + (sum & 0xff);
 	sum += sum >> 8;
-	sum &= 0xFF;
-	sum ^= 0xFF;
+	sum &= 0xff;
+	sum ^= 0xff;
 	return sum;
 }
 

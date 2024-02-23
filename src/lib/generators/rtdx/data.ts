@@ -27,9 +27,9 @@ function toID(str?: string): string {
 	return str.toLowerCase().replace(/[^a-z0-9]+/g, '');
 }
 
-export const Data = {
+const Data = {
 	pokemon: {
-		all: function () {
+		all() {
 			const pokemonList: PokemonData[] = [];
 			for (const [i, pokemon] of RomData.pokemon.entries()) {
 				let pokemonName = pokemon.name;
@@ -62,7 +62,7 @@ export const Data = {
 			}
 			return pokemonList;
 		},
-		get: function (indexOrName: number | string) {
+		get(indexOrName: number | string) {
 			let pokemon: PokemonData | undefined;
 			if (typeof indexOrName === 'number') {
 				pokemon = this.all().find((p) => p.valid && p.index === indexOrName);
@@ -73,7 +73,7 @@ export const Data = {
 				pokemon = {
 					const: '',
 					name: '',
-					index: 0,
+					index: -1,
 					valid: false,
 				};
 			}
@@ -82,7 +82,7 @@ export const Data = {
 	},
 
 	dungeons: {
-		all: function () {
+		all() {
 			const dungeons: DungeonData[] = [];
 			for (const [i, dungeon] of RomData.dungeons.entries()) {
 				const index = parseInt(dungeon.const.slice(1));
@@ -96,7 +96,7 @@ export const Data = {
 			}
 			return dungeons;
 		},
-		get: function (indexOrName: number | string) {
+		get(indexOrName: number | string) {
 			let dungeon: DungeonData | undefined;
 			if (typeof indexOrName === 'number') {
 				dungeon = this.all().find((d) => d.valid && d.index === indexOrName);
@@ -106,7 +106,7 @@ export const Data = {
 			if (!dungeon) {
 				dungeon = {
 					name: '',
-					index: 0,
+					index: -1,
 					floors: 0,
 					ascending: false,
 					valid: false,
@@ -120,3 +120,4 @@ export const Data = {
 	charmap_text: RomData.charmap_text,
 	crc32table: RomData.crc32table,
 };
+export default Data;
