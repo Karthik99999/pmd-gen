@@ -15,6 +15,7 @@
 			<img src="{base}/RRT_BRT_LOGO.png" class="card-img-top" alt="Rescue_Team" />
 			<div class="card-body btn-group" style="width: 100%;">
 				<a class="btn btn-info" href="{base}/rt-wondermail">Wonder Mail</a>
+				<a class="btn btn-info" href="{base}/rt-sosconverter">SOS to A-OK</a>
 			</div>
 		</div>
 	</div>

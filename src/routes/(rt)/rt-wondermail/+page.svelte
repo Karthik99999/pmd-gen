@@ -12,15 +12,15 @@
 
 	function generate(e: Event) {
 		e.preventDefault();
-		const missionType = parseInt((document.getElementById('missionType') as HTMLSelectElement).value);
+		const missionType = parseInt((document.getElementById('mission-type') as HTMLSelectElement).value);
 		const client = parseInt((document.getElementById('client') as HTMLSelectElement).value);
 		const target = parseInt((document.getElementById('target') as HTMLSelectElement).value);
 		const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
 		const floor = parseInt((document.getElementById('floor') as HTMLInputElement).value);
-		const itemToFindOrDeliver = parseInt((document.getElementById('itemToFindOrDeliver') as HTMLSelectElement).value);
-		const itemReward = parseInt((document.getElementById('itemReward') as HTMLSelectElement).value);
-		const moneyReward = (document.getElementById('moneyReward') as HTMLInputElement).checked;
-		const friendAreaReward = parseInt((document.getElementById('friendAreaReward') as HTMLSelectElement).value);
+		const itemToFindOrDeliver = parseInt((document.getElementById('item-to-find-or-deliver') as HTMLSelectElement).value);
+		const itemReward = parseInt((document.getElementById('item-reward') as HTMLSelectElement).value);
+		const moneyReward = (document.getElementById('money-reward') as HTMLInputElement).checked;
+		const friendAreaReward = parseInt((document.getElementById('friend-area-reward') as HTMLSelectElement).value);
 		try {
 			password = RT.generateWonderMail(missionType, client, target, dungeon, floor, itemToFindOrDeliver, itemReward, moneyReward, friendAreaReward);
 		} catch (e) {
@@ -29,9 +29,9 @@
 	}
 
 	function changeMissionType() {
-		const missionType = parseInt((document.getElementById('missionType') as HTMLSelectElement).value);
+		const missionType = parseInt((document.getElementById('mission-type') as HTMLSelectElement).value);
 		const target = document.getElementById('target') as HTMLSelectElement;
-		const itemToFindOrDeliver = document.getElementById('itemToFindOrDeliver') as HTMLSelectElement;
+		const itemToFindOrDeliver = document.getElementById('item-to-find-or-deliver') as HTMLSelectElement;
 		if (missionType === 1 || missionType === 2) {
 			target.value = '1';
 			target.required = true;
@@ -64,9 +64,9 @@
 	}
 
 	function updateDungeonItems() {
-		const missionType = parseInt((document.getElementById('missionType') as HTMLSelectElement).value);
+		const missionType = parseInt((document.getElementById('mission-type') as HTMLSelectElement).value);
 		const dungeonIndex = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
-		const itemToFindOrDeliver = document.getElementById('itemToFindOrDeliver') as HTMLSelectElement;
+		const itemToFindOrDeliver = document.getElementById('item-to-find-or-deliver') as HTMLSelectElement;
 
 		const dungeon = RT.data.dungeons.get(dungeonIndex);
 		itemToFindOrDeliver.innerHTML = '';
@@ -104,8 +104,8 @@
 
 <form on:submit={generate}>
 	<div class="form-group">
-		<label for="missionType">Mission Type:</label>
-		<select class="form-control" id="missionType" on:change={changeMissionType} required>
+		<label for="mission-type">Mission Type:</label>
+		<select class="form-control" id="mission-type" name="missionType" on:change={changeMissionType} required>
 			{#each RT.data.missionTypes as type, i}
 				<option value={i}>{type}</option>
 			{/each}
@@ -146,17 +146,17 @@
 		<input type="number" class="form-control" id="floor" min="1" max="3" placeholder="1-3" required />
 	</div>
 	<div class="form-group" hidden>
-		<label for="itemToFindOrDeliver">Item to find/deliver:</label>
-		<select class="form-control" id="itemToFindOrDeliver">
+		<label for="item-to-find-or-deliver">Item to find/deliver:</label>
+		<select class="form-control" id="item-to-find-or-deliver">
 			<option value="55">Oran Berry</option>
 			<option value="66">Pecha Berry</option>
 		</select>
 	</div>
 	<div class="form-group">
-		<label for="itemReward">Item reward:</label>
-		<input type="checkbox" id="moneyReward" checked />
-		<label for="moneyReward">(+ Money)</label>
-		<select class="form-control" id="itemReward">
+		<label for="item-reward">Item reward:</label>
+		<input type="checkbox" id="money-reward" checked />
+		<label for="money-reward">(+ Money)</label>
+		<select class="form-control" id="item-reward">
 			<option selected value></option>
 			{#each RT.data.items.all() as item}
 				{#if item.valid}
@@ -166,8 +166,8 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label for="friendAreaReward">Friend Area reward:</label>
-		<select class="form-control" id="friendAreaReward">
+		<label for="friend-area-reward">Friend Area reward:</label>
+		<select class="form-control" id="friend-area-reward">
 			<option selected value></option>
 			<option value="10">Mt. Moonview</option>
 			<option value="14">Sky Blue Plains</option>
@@ -177,12 +177,13 @@
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
-<br />
-<textarea class="form-control" id="password" rows="3" readonly>{password || ''}</textarea>
+<textarea class="form-control" id="password" rows="2" readonly>{password || ''}</textarea>
 
 <style>
 	textarea {
 		resize: none;
+		overflow: hidden;
+		margin-top: 2%;
 		font-family: monospace;
 	}
 </style>

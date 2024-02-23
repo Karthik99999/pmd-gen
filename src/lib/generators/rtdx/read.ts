@@ -1,4 +1,4 @@
-import { BitstreamReader } from '../bitstream';
+import { bitpack, BitstreamReader } from '../bitstream';
 import { checksum, crc32, RNG, symbols } from './utils';
 import Data from './data';
 
@@ -33,18 +33,6 @@ function unshuffle(code: string[]): string[] {
  */
 function toIndexes(code: string[]): number[] {
 	return code.map((c) => symbols.indexOf(c));
-}
-
-/**
- * Bitpacks the code
- */
-function bitpack(indexes: number[]): number[] {
-	const newCode: number[] = [];
-	const reader = new BitstreamReader(indexes, 6);
-	while (reader.remaining()) {
-		newCode.push(reader.read(8));
-	}
-	return newCode;
 }
 
 /**
@@ -109,7 +97,7 @@ function deserialize(password: string): RescueData | RevivalData {
 	const passwordArr = splitCode(password);
 	const unshuffled = unshuffle(passwordArr);
 	const indexes = toIndexes(unshuffled);
-	const bitpacked = bitpack(indexes);
+	const bitpacked = bitpack(indexes, 6, 8);
 	const code = decrypt(bitpacked);
 
 	const inclChecksum = code[0];

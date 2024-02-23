@@ -73,3 +73,12 @@ export class BitstreamWriter {
 		}
 	}
 }
+
+export function bitpack(bits: number[], oldSize: number, newSize: number) {
+	const newBits: number[] = [];
+	const reader = new BitstreamReader(bits, oldSize);
+	while (reader.remaining()) {
+		newBits.push(reader.read(newSize));
+	}
+	return newBits;
+}

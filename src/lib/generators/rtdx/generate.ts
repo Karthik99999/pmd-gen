@@ -1,4 +1,4 @@
-import { BitstreamReader, BitstreamWriter } from '../bitstream';
+import { bitpack, BitstreamWriter } from '../bitstream';
 import { symbols, checksum, RNG } from './utils';
 import { read } from './read';
 import Data from './data';
@@ -22,18 +22,6 @@ function shuffle(code: string[]): string[] {
  */
 function toSymbols(indexes: number[]): string[] {
 	return indexes.map((i) => symbols[i]);
-}
-
-/**
- * Unpacks the code
- */
-function bitunpack(bits: number[]): number[] {
-	const unpacked: number[] = [];
-	const reader = new BitstreamReader(bits, 8);
-	while (reader.remaining()) {
-		unpacked.push(reader.read(6));
-	}
-	return unpacked;
 }
 
 /**
@@ -105,7 +93,7 @@ function serialize(data: RescueData | RevivalData): string {
 	const indexes = writer.finish();
 	indexes.unshift(checksum(indexes));
 	const encrypted = encrypt(indexes);
-	const bitstream = bitunpack(encrypted);
+	const bitstream = bitpack(encrypted, 8, 6);
 	const symbols = toSymbols(bitstream);
 	const code = shuffle(symbols);
 	return code.join('');

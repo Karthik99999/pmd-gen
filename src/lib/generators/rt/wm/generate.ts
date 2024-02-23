@@ -1,5 +1,5 @@
-import { BitstreamReader, BitstreamWriter } from '../../bitstream';
-import { characters, checksum } from '../utils';
+import { bitpack, BitstreamWriter } from '../../bitstream';
+import { bitsToChars, checksum } from '../utils';
 import Data from '../data';
 
 function shuffle(password: string[]): string[] {
@@ -9,19 +9,6 @@ function shuffle(password: string[]): string[] {
 		newPassword[i] = password[shuffledIndexes[i]];
 	}
 	return newPassword;
-}
-
-function bitsToChars(password: number[]): string[] {
-	return password.map((num) => characters[num]);
-}
-
-function bitunpack(bits: number[]): number[] {
-	const unpacked: number[] = [];
-	const reader = new BitstreamReader(bits, 8);
-	while (reader.remaining()) {
-		unpacked.push(reader.read(5));
-	}
-	return unpacked;
 }
 
 interface WonderMailData {
@@ -54,7 +41,7 @@ export function serialize(data: WonderMailData) {
 
 	const code = writer.finish();
 	code.unshift(checksum(code));
-	const bits = bitunpack(code);
+	const bits = bitpack(code, 8, 5);
 	const chars = bitsToChars(bits);
 	const shuffled = shuffle(chars);
 	return shuffled.join('');
