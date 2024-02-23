@@ -31,7 +31,7 @@
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>
 
-<h4>Rescue Team DX Rescue Password Generator</h4>
+<h4>Rescue Team DX Friend Rescue Generator</h4>
 
 <form on:submit={generate}>
 	<div class="form-group">

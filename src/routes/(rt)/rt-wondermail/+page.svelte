@@ -96,6 +96,8 @@
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>
 
+<h4>Rescue Team Wondermail Generator</h4>
+
 <form on:submit={generate}>
 	<div class="form-group">
 		<label for="missionType">Mission Type:</label>
