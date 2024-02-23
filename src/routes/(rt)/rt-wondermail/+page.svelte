@@ -22,7 +22,7 @@
 		const moneyReward = (document.getElementById('moneyReward') as HTMLInputElement).checked;
 		const friendAreaReward = parseInt((document.getElementById('friendAreaReward') as HTMLSelectElement).value);
 		try {
-			password = RT.generateWondermail(missionType, client, target, dungeon, floor, itemToFindOrDeliver, itemReward, moneyReward, friendAreaReward);
+			password = RT.generateWonderMail(missionType, client, target, dungeon, floor, itemToFindOrDeliver, itemReward, moneyReward, friendAreaReward);
 		} catch (e) {
 			alert(e);
 		}
@@ -96,7 +96,7 @@
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>
 
-<h4>Rescue Team Wondermail Generator</h4>
+<h4>Rescue Team Wonder Mail Generator</h4>
 
 <form on:submit={generate}>
 	<div class="form-group">

@@ -24,7 +24,7 @@ function bitunpack(bits: number[]): number[] {
 	return unpacked;
 }
 
-interface WondermailData {
+interface WonderMailData {
 	missionType: number;
 	clientPokemon: number;
 	targetPokemon: number;
@@ -36,7 +36,7 @@ interface WondermailData {
 	floor: number;
 }
 
-export function serialize(data: WondermailData) {
+export function serialize(data: WonderMailData) {
 	const writer = new BitstreamWriter(8);
 	writer.write(5, 4); // Mail type
 	writer.write(data.missionType, 3);
@@ -60,7 +60,7 @@ export function serialize(data: WondermailData) {
 	return shuffled.join('');
 }
 
-export function generateWondermail(
+export function generateWonderMail(
 	missionType: number,
 	clientPokemon: number,
 	targetPokemon: number,
@@ -110,7 +110,7 @@ export function generateWondermail(
 		friendAreaReward = 0;
 	}
 
-	const data: WondermailData = {
+	const data: WonderMailData = {
 		missionType,
 		clientPokemon,
 		targetPokemon,

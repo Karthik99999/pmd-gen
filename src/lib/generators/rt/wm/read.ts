@@ -55,9 +55,9 @@ function bitpack(bits: number[]): number[] {
 }
 
 /**
- * Data structure of a wondermail
+ * Data structure of a wonder mail
  */
-interface WondermailData {
+interface WonderMailData {
 	inclChecksum: number;
 	calcChecksum: number;
 	mailType: number;
@@ -75,7 +75,7 @@ interface WondermailData {
 	floor: number;
 }
 
-function deserialize(password: string): WondermailData {
+function deserialize(password: string): WonderMailData {
 	const sanitized = sanitizePassword(password);
 	const unshuffled = unshuffle(sanitized);
 	const bits = charsToBits(unshuffled);
@@ -100,7 +100,7 @@ function deserialize(password: string): WondermailData {
 	const dungeon = reader.read(7);
 	const floor = reader.read(7);
 
-	const data: WondermailData = {
+	const data: WonderMailData = {
 		inclChecksum,
 		calcChecksum,
 		mailType,
