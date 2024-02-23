@@ -3,16 +3,16 @@
 </script>
 
 <svelte:head>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164742584-1"></script>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-5GECCMYW75"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
-
 		function gtag() {
 			dataLayer.push(arguments);
 		}
 		gtag('js', new Date());
-		gtag('config', 'UA-164742584-1');
+
+		gtag('config', 'G-5GECCMYW75');
 	</script>
 	<link rel="icon" type="image/x-icon" href="{base}/favicon.ico" />
 	<meta name="description" content="A password generator to create Wonder Mail, rescue passwords, revival passwords and more for Pokemon Mystery Dungeon." />
