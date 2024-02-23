@@ -14,9 +14,8 @@
 		gtag('js', new Date());
 		gtag('config', 'UA-164742584-1');
 	</script>
-	<title>PMD Gen | Generate passwords for Pokemon Mystery Dungeon</title>
 	<link rel="icon" type="image/x-icon" href="{base}/favicon.ico" />
-	<meta name="description" content="A password tool/generator to create friend rescue/revival passwords for Pokemon Mystery Dungeon: Rescue Team DX. More games coming soon." />
+	<meta name="description" content="A password generator to create Wonder Mail, rescue passwords, revival passwords and more for Pokemon Mystery Dungeon." />
 </svelte:head>
 
 <div id="page-container">

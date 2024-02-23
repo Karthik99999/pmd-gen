@@ -27,6 +27,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>PMD Gen | Rescue Team DX Friend Rescue Password Generator</title>
+</svelte:head>
+
 <center>
 	<a class="btn btn-link" href={base}>Go back</a>
 </center>

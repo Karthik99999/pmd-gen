@@ -2,6 +2,10 @@
 	import { base } from '$app/paths';
 </script>
 
+<svelte:head>
+	<title>PMD Gen | Generate passwords for Pokemon Mystery Dungeon</title>
+</svelte:head>
+
 <center>
 	<h3>Generators</h3>
 </center>
