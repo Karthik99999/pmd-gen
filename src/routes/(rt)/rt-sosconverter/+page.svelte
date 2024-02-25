@@ -55,35 +55,37 @@
 	<li>For the ellipsis (…), you may use "."</li>
 </ul>
 
-<h6>SOS to A-OK</h6>
-<textarea class="form-control" rows="3" bind:value={sosInput} />
-<button class="btn btn-primary" on:click={convertSOS}>Convert</button>
-<textarea class="form-control" rows="3" readonly>{aokResult || ''}</textarea>
+<div class="mb-3">
+	<div class="form-group">
+		<label for="sos">SOS to A-OK:</label>
+		<textarea class="form-control" rows="3" bind:value={sosInput} />
+	</div>
+	<button class="btn btn-primary" on:click={convertSOS}>Convert</button>
+</div>
+<textarea class="form-control" rows="3" readonly bind:value={aokResult} />
 
-<h6>A-OK to Thank-You</h6>
-<textarea class="form-control" rows="3" bind:value={aokInput} />
-<label for="item-reward">Item reward:</label>
-<select class="form-control" id="item-reward" bind:value={itemReward}>
-	<option selected value></option>
-	{#each RT.data.items.all() as item}
-		{#if item.valid}
-			<option value={item.index}>{item.name}</option>
-		{/if}
-	{/each}
-</select>
-<button class="btn btn-primary" on:click={convertAOK}>Convert</button>
-<textarea class="form-control" rows="3" readonly>{thankYouResult || ''}</textarea>
+<div class="mt-3 mb-3">
+	<div class="form-group">
+		<label for="sos">A-OK to Thank-You:</label>
+		<textarea class="form-control" rows="3" bind:value={aokInput} />
+	</div>
+	<div class="form-group">
+		<label for="item-reward">Item reward:</label>
+		<select class="form-control" id="item-reward" bind:value={itemReward}>
+			<option selected value></option>
+			{#each RT.data.items.all(true) as item}
+				<option value={item.index}>{item.name}</option>
+			{/each}
+		</select>
+	</div>
+	<button class="btn btn-primary" on:click={convertAOK}>Convert</button>
+</div>
+<textarea class="form-control" rows="3" readonly bind:value={thankYouResult} />
 
 <style>
 	textarea {
 		resize: none;
 		overflow: hidden;
 		font-family: monospace;
-	}
-
-	button,
-	select,
-	textarea {
-		margin-bottom: 2%;
 	}
 </style>

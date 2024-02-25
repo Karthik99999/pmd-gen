@@ -29,9 +29,10 @@ function toID(str?: string): string {
 
 const Data = {
 	pokemon: {
-		all() {
+		all(validOnly = false) {
 			const pokemonList: PokemonData[] = [];
 			for (const [i, pokemon] of RomData.pokemon.entries()) {
+				if (validOnly && !pokemon.valid) continue;
 				let pokemonName = pokemon.name;
 				if (pokemonName === 'Unown') {
 					pokemonName += ` (${pokemon.const.slice(7).replace('EXC', '!').replace('QUE', '?')})`;
@@ -82,9 +83,10 @@ const Data = {
 	},
 
 	dungeons: {
-		all() {
+		all(validOnly = false) {
 			const dungeons: DungeonData[] = [];
 			for (const [i, dungeon] of RomData.dungeons.entries()) {
+				if (validOnly && !dungeon.valid) continue;
 				const index = parseInt(dungeon.const.slice(1));
 				dungeons.push({
 					name: dungeon.name,

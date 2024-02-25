@@ -13,6 +13,7 @@
 		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"felte": "^1.2.14",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.1",
 		"svelte": "^4.2.7",

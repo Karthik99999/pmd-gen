@@ -29,7 +29,7 @@ export function serialize(data: WonderMailData) {
 	writer.write(data.missionType, 3);
 	writer.write(0, 4); // Unknown
 	writer.write(data.clientPokemon, 9);
-	writer.write(data.targetPokemon || data.clientPokemon, 9);
+	writer.write(data.targetPokemon, 9);
 	writer.write(data.itemToFindOrDeliver || 9, 8);
 	writer.write(data.rewardType, 4);
 	writer.write(data.itemReward || 9, 8);
@@ -47,66 +47,68 @@ export function serialize(data: WonderMailData) {
 	return shuffled.join('');
 }
 
-export function generateWonderMail(
-	missionType: number,
-	clientPokemon: number,
-	targetPokemon: number,
-	dungeon: number,
-	floor: number,
-	itemToFindOrDeliver?: number,
-	itemReward?: number,
-	moneyReward?: boolean,
-	friendAreaReward?: number
-) {
-	if (!Data.pokemon.get(clientPokemon).valid) throw new Error('Invalid client Pokemon');
-	if (missionType === 1 || missionType === 2) {
-		if (!Data.pokemon.get(targetPokemon).valid) throw new Error('Invalid target Pokemon');
+export function generateWonderMail(data: {
+	missionType: number;
+	clientPokemon: number;
+	targetPokemon: number;
+	dungeon: number;
+	floor: number;
+	itemToFindOrDeliver?: number;
+	itemReward?: number;
+	moneyReward?: boolean;
+	friendAreaReward?: number;
+}) {
+	if (!Data.pokemon.get(data.clientPokemon).valid) throw new Error('Invalid client Pokemon');
+	if (data.missionType === 1 || data.missionType === 2) {
+		if (!Data.pokemon.get(data.targetPokemon).valid) throw new Error('Invalid target Pokemon');
+	} else {
+		data.targetPokemon = data.clientPokemon;
 	}
 
-	const dungeonData = Data.dungeons.get(dungeon);
+	const dungeonData = Data.dungeons.get(data.dungeon);
 	if (!dungeonData.valid) throw new Error('Invalid dungeon');
-	if (floor < 1 || floor > dungeonData.floors) throw new Error('Invalid floor');
+	if (data.floor < 1 || data.floor > dungeonData.floors) throw new Error('Invalid floor');
 
-	if (missionType === 3 || missionType === 4) {
-		if (!itemToFindOrDeliver) throw new Error('Item to find/deliver is required for this mission type');
-		const itemToFindOrDeliverData = Data.items.get(itemToFindOrDeliver);
+	if (data.missionType === 3 || data.missionType === 4) {
+		if (!data.itemToFindOrDeliver) throw new Error('Item to find/deliver is required for this mission type');
+		const itemToFindOrDeliverData = Data.items.get(data.itemToFindOrDeliver);
 		if (
 			!itemToFindOrDeliverData.valid ||
-			(missionType === 3 && !dungeonData.items.includes(itemToFindOrDeliverData.index))
+			(data.missionType === 3 && !dungeonData.items.includes(itemToFindOrDeliverData.index))
 		) {
 			throw new Error('Invalid item to find/deliver');
 		}
 	} else {
-		itemToFindOrDeliver = 9;
+		data.itemToFindOrDeliver = 9;
 	}
 
-	if (itemReward && !Data.items.get(itemReward).valid) throw new Error('Invalid item reward');
-	if (friendAreaReward) {
-		if (![10, 14, 35, 36].includes(friendAreaReward)) throw new Error('Invalid Friend Area reward');
-		if (Data.dungeons.getDifficulty(dungeonData, floor, missionType) === 0) {
+	if (data.itemReward && !Data.items.get(data.itemReward).valid) throw new Error('Invalid item reward');
+	if (data.friendAreaReward) {
+		if (![10, 14, 35, 36].includes(data.friendAreaReward)) throw new Error('Invalid Friend Area reward');
+		if (Data.dungeons.getDifficulty(dungeonData, data.floor, data.missionType) === 0) {
 			throw new Error('The mission must have at least D difficulty to recieve a Friend Area reward');
 		}
 	}
 
 	let rewardType = 5;
-	if (friendAreaReward) {
+	if (data.friendAreaReward) {
 		rewardType = 9;
-		itemReward = 9;
-	} else if (itemReward) {
-		rewardType = moneyReward ? 6 : 8;
-		friendAreaReward = 0;
+		data.itemReward = 9;
+	} else if (data.itemReward) {
+		rewardType = data.moneyReward ? 6 : 8;
+		data.friendAreaReward = 0;
 	}
 
-	const data: WonderMailData = {
-		missionType,
-		clientPokemon,
-		targetPokemon,
-		itemToFindOrDeliver,
+	const wmData: WonderMailData = {
+		missionType: data.missionType,
+		clientPokemon: data.clientPokemon,
+		targetPokemon: data.targetPokemon,
+		itemToFindOrDeliver: data.itemToFindOrDeliver,
 		rewardType,
-		itemReward,
-		friendAreaReward,
-		dungeon,
-		floor,
+		itemReward: data.itemReward,
+		friendAreaReward: data.friendAreaReward,
+		dungeon: data.dungeon,
+		floor: data.floor,
 	};
-	return serialize(data);
+	return serialize(wmData);
 }

@@ -3,9 +3,6 @@ import { symbols, checksum, RNG } from './utils';
 import { read } from './read';
 import Data from './data';
 
-/**
- * Dhuffles the password symbols
- */
 function shuffle(code: string[]): string[] {
 	const unshuffledIndex = [
 		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
@@ -17,16 +14,10 @@ function shuffle(code: string[]): string[] {
 	return shuffled;
 }
 
-/**
- * Converts indexes to symbols
- */
 function toSymbols(indexes: number[]): string[] {
 	return indexes.map((i) => symbols[i]);
 }
 
-/**
- * Encrypt the code using rng
- */
 function encrypt(code: number[]): number[] {
 	const newcode = code.slice(0, 2);
 	const seed = code[0] | (code[1] << 8);
@@ -40,9 +31,6 @@ function encrypt(code: number[]): number[] {
 	return newcode;
 }
 
-/**
- * Data needed to generate a password
- */
 interface PasswordData {
 	timestamp: number;
 	team: number[];
@@ -103,46 +91,39 @@ function serialize(data: RescueData | RevivalData): string {
  * Generates a rescue password. The timestamp, gender of the pokemon being rescued, and the reward type
  * are all hardcoded, since you rarely would want to change them.
  */
-export function generateRescue(
-	dungeonNameOrIndex: string | number,
-	floor: number,
-	teamName = 'pmd-gen',
-	pokemonNameOrIndex: string | number = 1
-): string {
-	if (teamName.length < 1 || teamName.length > 12) throw new Error('Team name must be between 1 and 12 characters');
+export function generateRescue(data: { team: string; dungeon: number; floor: number; pokemon: number }): string {
+	if (data.team.length < 1 || data.team.length > 12) throw new Error('Team name must be between 1 and 12 characters');
 	const team: number[] = [];
-	for (const char of teamName) {
+	for (const char of data.team) {
 		const index = Data.charmap_text.indexOf(char);
 		if (index < 0) {
 			throw new Error(`Invalid character in team name: ${char}`);
 		}
 		team.push(index);
 	}
-	const dungeon = Data.dungeons.get(dungeonNameOrIndex);
-	if (!dungeon) {
+	const dungeonData = Data.dungeons.get(data.dungeon);
+	if (!dungeonData.valid) {
 		throw new Error('Invalid dungeon');
 	}
-	if (floor < 1 || floor > dungeon.floors) {
+	if (data.floor < 1 || data.floor > dungeonData.floors) {
 		throw new Error('Invalid floor');
 	}
 
-	const pokemon = Data.pokemon.get(pokemonNameOrIndex);
-	// It's probably best to let the user know the Pokemon name they sent was invalid, rather than going to the default
-	if (!pokemon.valid) {
+	if (!Data.pokemon.get(data.pokemon).valid) {
 		throw new Error('Invalid Pokemon');
 	}
 
-	const data: RescueData = {
+	const rescueData: RescueData = {
 		timestamp: Math.round(Date.now() / 1000),
 		type: 0,
 		team,
-		dungeon: dungeon.index,
-		floor,
-		pokemon: pokemon.index,
+		dungeon: data.dungeon,
+		floor: data.floor,
+		pokemon: data.pokemon,
 		gender: 0,
 		reward: 3,
 	};
-	return serialize(data);
+	return serialize(rescueData);
 }
 
 /**

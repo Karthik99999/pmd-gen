@@ -1,30 +1,27 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { RTDX } from '$lib/generators';
+	import { createForm } from 'felte';
 	import PasswordImage from '../PasswordImage.svelte';
 
+	let dungeonIndex = 1;
+	$: dungeon = RTDX.data.dungeons.get(dungeonIndex);
 	let password: string;
 
-	function generate(e: Event) {
-		e.preventDefault();
-		const team = (document.getElementById('team') as HTMLInputElement).value;
-		const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
-		const floor = parseInt((document.getElementById('floor') as HTMLInputElement).value);
-		const pokemon = parseInt((document.getElementById('pokemon') as HTMLSelectElement).value);
-		try {
-			password = RTDX.generateRescue(dungeon, floor, team, pokemon);
-		} catch (e) {
-			alert(e);
-		}
-	}
-
-	function updateMaxFloors() {
-		const dungeon = parseInt((document.getElementById('dungeon') as HTMLSelectElement).value);
-		const maxFloors = RTDX.data.dungeons.get(dungeon).floors;
-		const floor = document.getElementById('floor') as HTMLInputElement;
-		floor.max = maxFloors.toString();
-		floor.placeholder = `1-${maxFloors}`;
-	}
+	const { form } = createForm({
+		transform: (values: any) => ({
+			...values,
+			dungeon: parseInt(values.dungeon),
+			pokemon: parseInt(values.pokemon),
+		}),
+		onSubmit(values) {
+			try {
+				password = RTDX.generateRescue(values);
+			} catch (e) {
+				alert(e);
+			}
+		},
+	});
 </script>
 
 <svelte:head>
@@ -37,37 +34,31 @@
 
 <h4>Rescue Team DX Friend Rescue Generator</h4>
 
-<form on:submit={generate}>
+<form use:form>
 	<div class="form-group">
 		<label for="team">Team name:</label>
-		<input type="text" class="form-control" id="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required />
+		<input type="text" class="form-control" id="team" name="team" maxlength="12" placeholder="Poképals" value="pmd-gen" required />
 	</div>
 	<div class="form-group">
 		<label for="dungeon">Dungeon:</label>
-		<select class="form-control" id="dungeon" on:change={updateMaxFloors} required>
-			{#each RTDX.data.dungeons.all() as dungeon}
-				{#if dungeon.valid}
-					<option value={dungeon.index}>{dungeon.name}</option>
-				{/if}
+		<select class="form-control" id="dungeon" name="dungeon" bind:value={dungeonIndex} required>
+			{#each RTDX.data.dungeons.all(true) as dungeon}
+				<option value={dungeon.index}>{dungeon.name}</option>
 			{/each}
 		</select>
 	</div>
 	<div class="form-group">
 		<label for="floor">Floor:</label>
-		<input type="number" class="form-control" id="floor" min="1" max="3" placeholder="1-3" required />
+		<input type="number" class="form-control" id="floor" name="floor" min="1" max={dungeon.floors} placeholder="1-{dungeon.floors}" required />
 	</div>
 	<div class="form-group">
 		<label for="pokemon">Pokémon:</label>
-		<select class="form-control" id="pokemon" required>
-			{#each RTDX.data.pokemon.all() as pokemon}
-				{#if pokemon.valid}
-					<option value={pokemon.index}>{pokemon.name}</option>
-				{/if}
+		<select class="form-control" id="pokemon" name="pokemon" required>
+			{#each RTDX.data.pokemon.all(true) as pokemon}
+				<option value={pokemon.index}>{pokemon.name}</option>
 			{/each}
 		</select>
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
-{#if password}
-	<PasswordImage {password} type="rescue" />
-{/if}
+<PasswordImage {password} type="rescue" />
