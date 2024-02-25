@@ -22,14 +22,14 @@
 	<div id="content-wrap">
 		<!-- Top Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href={base}>PMD Gen</a>
+			<a class="navbar-brand" href="{base}/">PMD Gen</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbar">
 				<ul class="navbar-nav ml-auto">
-					<a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px"><i class="fab fa-github" style="color:white"></i></a>
+					<a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px"><i class="bi bi-github" style="color:white"></i></a>
 				</ul>
 			</div>
 		</nav>

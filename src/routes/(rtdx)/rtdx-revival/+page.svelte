@@ -21,7 +21,7 @@
 </svelte:head>
 
 <center>
-	<a class="btn btn-link" href={base}>Go back</a>
+	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill" /> Home</a>
 </center>
 
 <h4>Rescue Team DX Revival Password Generator</h4>
