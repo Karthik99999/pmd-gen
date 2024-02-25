@@ -13,6 +13,7 @@
 			...values,
 			dungeon: parseInt(values.dungeon),
 			pokemon: parseInt(values.pokemon),
+			reward: parseInt(values.reward),
 		}),
 		onSubmit(values) {
 			try {
@@ -57,6 +58,14 @@
 			{#each RTDX.data.pokemon.all(true) as pokemon}
 				<option value={pokemon.index}>{pokemon.name}</option>
 			{/each}
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="reward">Reward:</label>
+		<select class="form-control" id="reward" name="reward" required>
+			<option value="3">Deluxe</option>
+			<option value="2">Special</option>
+			<option value="1">Regular</option>
 		</select>
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>

@@ -37,12 +37,7 @@ interface PasswordData {
 	dungeon: number;
 	floor: number;
 	pokemon: number;
-	/**
-	 * 1 = Regular,
-	 * 2 = Special,
-	 * 3 = Deluxe
-	 */
-	reward: 1 | 2 | 3;
+	reward: number;
 	revive: number;
 }
 
@@ -81,7 +76,13 @@ function serialize(data: RescueData | RevivalData): string {
 	return shuffled.join('');
 }
 
-export function generateRescue(data: { team: string; dungeon: number; floor: number; pokemon: number }): string {
+export function generateRescue(data: {
+	team: string;
+	dungeon: number;
+	floor: number;
+	pokemon: number;
+	reward: number;
+}): string {
 	if (data.team.length < 1 || data.team.length > 12) throw new Error('Team name must be between 1 and 12 characters');
 	const team: number[] = [];
 	for (const char of data.team) {
@@ -91,17 +92,14 @@ export function generateRescue(data: { team: string; dungeon: number; floor: num
 		}
 		team.push(index);
 	}
-	const dungeonData = Data.dungeons.get(data.dungeon);
-	if (!dungeonData.valid) {
-		throw new Error('Invalid dungeon');
-	}
-	if (data.floor < 1 || data.floor > dungeonData.floors) {
-		throw new Error('Invalid floor');
-	}
 
-	if (!Data.pokemon.get(data.pokemon).valid) {
-		throw new Error('Invalid Pokemon');
-	}
+	const dungeonData = Data.dungeons.get(data.dungeon);
+	if (!dungeonData.valid) throw new Error('Invalid dungeon');
+	if (data.floor < 1 || data.floor > dungeonData.floors) throw new Error('Invalid floor');
+
+	if (!Data.pokemon.get(data.pokemon).valid) throw new Error('Invalid Pokemon');
+
+	if (data.reward < 0 || data.reward > 3) throw new Error('Invalid reward type');
 
 	const rescueData: RescueData = {
 		timestamp: Math.round(Date.now() / 1000),
@@ -110,7 +108,7 @@ export function generateRescue(data: { team: string; dungeon: number; floor: num
 		dungeon: data.dungeon,
 		floor: data.floor,
 		pokemon: data.pokemon,
-		reward: 3,
+		reward: data.reward,
 	};
 	return serialize(rescueData);
 }
@@ -123,9 +121,7 @@ export function generateRevival(password: string, teamName: string): string {
 	const team: number[] = [];
 	for (const char of teamName) {
 		const index = Data.charmap_text.indexOf(char);
-		if (index < 0) {
-			throw new Error(`Invalid character in team name: ${char}`);
-		}
+		if (index < 0) throw new Error(`Invalid character in team name: ${char}`);
 		team.push(index);
 	}
 

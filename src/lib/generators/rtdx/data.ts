@@ -85,15 +85,16 @@ const Data = {
 	dungeons: {
 		all(validOnly = false) {
 			const dungeons: DungeonData[] = [];
-			for (const [i, dungeon] of RomData.dungeons.entries()) {
-				if (validOnly && !dungeon.valid) continue;
+			for (const dungeon of RomData.dungeons) {
 				const index = parseInt(dungeon.const.slice(1));
+				const valid = dungeon.valid && index <= 45;
+				if (validOnly && !valid) continue;
 				dungeons.push({
 					name: dungeon.name,
 					index,
 					floors: dungeon.floors,
 					ascending: dungeon.ascending,
-					valid: dungeon.valid && index <= 45,
+					valid,
 				});
 			}
 			return dungeons;
