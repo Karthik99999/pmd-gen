@@ -32,7 +32,7 @@ function toID(str?: string): string {
 const Data = {
 	pokemon: {
 		all(validOnly = false): PokemonData[] {
-			return RomData.pokemon.filter((p) => !validOnly || p.valid).map((p, index) => ({ ...p, index }));
+			return RomData.pokemon.map((p, index) => ({ ...p, index })).filter((p) => !validOnly || p.valid);
 		},
 		get(indexOrName: number | string) {
 			let pokemon: PokemonData | undefined;
@@ -68,7 +68,7 @@ const Data = {
 	},
 	dungeons: {
 		all(validOnly = false): DungeonData[] {
-			return RomData.dungeons.filter((d) => !validOnly || d.valid).map((d, index) => ({ ...d, index }));
+			return RomData.dungeons.map((d, index) => ({ ...d, index })).filter((d) => !validOnly || d.valid);
 		},
 		get(indexOrName: number | string) {
 			let dungeon: DungeonData | undefined;
@@ -124,7 +124,7 @@ const Data = {
 	},
 	items: {
 		all(validOnly = false): ItemData[] {
-			return RomData.items.filter((i) => !validOnly || i.valid).map((i, index) => ({ ...i, index }));
+			return RomData.items.map((i, index) => ({ ...i, index })).filter((i) => !validOnly || i.valid);
 		},
 		get(indexOrName: number | string) {
 			let item: ItemData | undefined;
