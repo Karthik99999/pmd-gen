@@ -4,15 +4,15 @@ import { deserialize } from './read';
 import Data from '../data';
 
 function shuffle(password: string[]): string[] {
-	const newPassword: string[] = [];
 	const shuffledIndexes = [
 		23, 16, 37, 45, 4, 41, 52, 1, 8, 39, 25, 36, 47, 0, 12, 3, 33, 20, 28, 9, 49, 53, 51, 31, 11, 2, 13, 14, 34, 5, 46,
 		27, 17, 18, 19, 29, 38, 48, 22, 32, 42, 15, 6, 26, 30, 10, 44, 50, 35, 7, 40, 21, 43, 24,
 	];
+	const shuffled = [];
 	for (let i = 0; i < shuffledIndexes.length; i++) {
-		newPassword[i] = password[shuffledIndexes[i]];
+		shuffled[i] = password[shuffledIndexes[i]];
 	}
-	return newPassword;
+	return shuffled;
 }
 
 interface PasswordData {

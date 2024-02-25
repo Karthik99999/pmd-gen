@@ -4,18 +4,18 @@ import { deserialize } from './read';
 import Data from './data';
 
 function shuffle(code: string[]): string[] {
-	const unshuffledIndex = [
+	const shuffledIndexes = [
 		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
 	];
-	const shuffled: string[] = [];
+	const shuffled = [];
 	for (let i = 0; i < 30; i++) {
-		shuffled[unshuffledIndex[i]] = code[i];
+		shuffled[shuffledIndexes[i]] = code[i];
 	}
 	return shuffled;
 }
 
-function toSymbols(indexes: number[]): string[] {
-	return indexes.map((i) => symbols[i]);
+function bitsToSymbols(bits: number[]): string[] {
+	return bits.map((i) => symbols[i]);
 }
 
 function encrypt(code: number[]): number[] {
@@ -72,13 +72,13 @@ function serialize(data: RescueData | RevivalData): string {
 		writer.write(data.revive, 30);
 	}
 
-	const indexes = writer.finish();
-	indexes.unshift(checksum(indexes));
-	const encrypted = encrypt(indexes);
+	const code = writer.finish();
+	code.unshift(checksum(code));
+	const encrypted = encrypt(code);
 	const bitstream = bitpack(encrypted, 8, 6);
-	const symbols = toSymbols(bitstream);
-	const code = shuffle(symbols);
-	return code.join('');
+	const bits = bitsToSymbols(bitstream);
+	const shuffled = shuffle(bits);
+	return shuffled.join('');
 }
 
 export function generateRescue(data: { team: string; dungeon: number; floor: number; pokemon: number }): string {

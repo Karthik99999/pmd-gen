@@ -2,15 +2,15 @@ import { bitpack, BitstreamReader } from '../../bitstream';
 import { sanitizePassword, charsToBits, checksum } from '../utils';
 
 function unshuffle(password: string[]): string[] {
-	const newPassword: string[] = [];
 	const shuffledIndexes = [
 		23, 16, 37, 45, 4, 41, 52, 1, 8, 39, 25, 36, 47, 0, 12, 3, 33, 20, 28, 9, 49, 53, 51, 31, 11, 2, 13, 14, 34, 5, 46,
 		27, 17, 18, 19, 29, 38, 48, 22, 32, 42, 15, 6, 26, 30, 10, 44, 50, 35, 7, 40, 21, 43, 24,
 	];
+	const unshuffled = [];
 	for (let i = 0; i < shuffledIndexes.length; i++) {
-		newPassword[shuffledIndexes[i]] = password[i];
+		unshuffled[shuffledIndexes[i]] = password[i];
 	}
-	return newPassword;
+	return unshuffled;
 }
 
 interface PasswordData {

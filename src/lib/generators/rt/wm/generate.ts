@@ -3,12 +3,12 @@ import { bitsToChars, checksum } from '../utils';
 import Data from '../data';
 
 function shuffle(password: string[]): string[] {
-	const newPassword: string[] = [];
 	const shuffledIndexes = [12, 20, 9, 17, 4, 15, 1, 23, 3, 7, 19, 14, 0, 5, 21, 6, 8, 18, 11, 2, 10, 13, 22, 16];
+	const shuffled = [];
 	for (let i = 0; i < shuffledIndexes.length; i++) {
-		newPassword[i] = password[shuffledIndexes[i]];
+		shuffled[i] = password[shuffledIndexes[i]];
 	}
-	return newPassword;
+	return shuffled;
 }
 
 interface WonderMailData {

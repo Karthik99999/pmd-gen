@@ -14,7 +14,7 @@ const characters = [
  */
 export function sanitizePassword(password: string, length: number): string[] {
 	password = password.replace(/\s/g, '');
-	if (password.length !== length) throw new Error(`Password must be exatly ${length} characters long`);
+	if (password.length !== length) throw new Error(`Password must be exactly ${length} characters long`);
 	const sanitized: string[] = [];
 	for (let char of password) {
 		char = char.replace(/\./g, '…').replace(/m|#/g, '♂').replace(/f|%/g, '♀');

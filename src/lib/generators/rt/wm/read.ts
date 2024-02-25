@@ -2,12 +2,12 @@ import { bitpack, BitstreamReader } from '../../bitstream';
 import { sanitizePassword, charsToBits, checksum } from '../utils';
 
 function unshuffle(password: string[]): string[] {
-	const newPassword: string[] = [];
 	const shuffledIndexes = [12, 20, 9, 17, 4, 15, 1, 23, 3, 7, 19, 14, 0, 5, 21, 6, 8, 18, 11, 2, 10, 13, 22, 16];
+	const unshuffled = [];
 	for (let i = 0; i < shuffledIndexes.length; i++) {
-		newPassword[shuffledIndexes[i]] = password[i];
+		unshuffled[shuffledIndexes[i]] = password[i];
 	}
-	return newPassword;
+	return unshuffled;
 }
 
 interface WonderMailData {

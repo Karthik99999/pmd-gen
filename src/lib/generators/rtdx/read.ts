@@ -2,28 +2,30 @@ import { bitpack, BitstreamReader } from '../bitstream';
 import { checksum, crc32, RNG, symbols } from './utils';
 import Data from './data';
 
-function splitCode(code: string): string[] {
-	code = code.replace(/\s/g, '').toLowerCase();
-	let codeToSplit = '';
-	for (let i = 0; i < code.length; i += 2) {
-		codeToSplit += code.slice(i, i + 2) + ' ';
+function sanitizePassword(password: string): string[] {
+	const split = password.replace(/\s/g, '').match(/.{2}/g);
+	if (split?.length !== 30) throw new Error('Password must be exactly 30 symbols long');
+	for (let symbol of split) {
+		if (!symbols.includes(symbol)) {
+			throw new Error(`Invalid symbol: ${symbol}`);
+		}
 	}
-	return codeToSplit.trim().split(' ');
+	return split;
 }
 
 function unshuffle(code: string[]): string[] {
-	const unshuffledIndex = [
+	const shuffledIndexes = [
 		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
 	];
-	const unshuffled: string[] = [];
+	const unshuffled = [];
 	for (let i = 0; i < 30; i++) {
-		unshuffled[i] = code[unshuffledIndex[i]];
+		unshuffled[i] = code[shuffledIndexes[i]];
 	}
 	return unshuffled;
 }
 
-function toIndexes(code: string[]): number[] {
-	return code.map((c) => symbols.indexOf(c));
+function symbolsToBits(password: string[]): number[] {
+	return password.map((symbol) => symbols.indexOf(symbol));
 }
 
 function decrypt(code: number[]): number[] {
@@ -59,10 +61,10 @@ type RescueData = PasswordData & { type: 0 };
 type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward' | 'unknown2'> & { type: 1 };
 
 export function deserialize(password: string): RescueData | RevivalData {
-	const passwordArr = splitCode(password);
-	const unshuffled = unshuffle(passwordArr);
-	const indexes = toIndexes(unshuffled);
-	const bitpacked = bitpack(indexes, 6, 8);
+	const sanitized = sanitizePassword(password);
+	const unshuffled = unshuffle(sanitized);
+	const bits = symbolsToBits(unshuffled);
+	const bitpacked = bitpack(bits, 6, 8);
 	const code = decrypt(bitpacked);
 
 	const inclChecksum = code[0];
@@ -84,11 +86,8 @@ export function deserialize(password: string): RescueData | RevivalData {
 		const reward = reader.read(2);
 		const unknown2 = reader.read(1);
 
-		const indexes = toIndexes(passwordArr);
-		let charcode = '';
-		for (const i of indexes) {
-			charcode += Data.charmap[i];
-		}
+		const bits = symbolsToBits(sanitized);
+		const charcode = bits.map((b) => Data.charmap[b]).join('');
 		const revive = crc32(charcode) & 0x3fffffff;
 
 		const data: RescueData = {
