@@ -1,6 +1,6 @@
 import { bitpack, BitstreamWriter } from '../bitstream';
 import { symbols, checksum, RNG } from './utils';
-import { read } from './read';
+import { deserialize } from './read';
 import Data from './data';
 
 function shuffle(code: string[]): string[] {
@@ -38,12 +38,6 @@ interface PasswordData {
 	floor: number;
 	pokemon: number;
 	/**
-	 * 0 = Male,
-	 * 1 = Female,
-	 * 2 = Genderless
-	 */
-	gender: 0 | 1 | 2;
-	/**
 	 * 1 = Regular,
 	 * 2 = Special,
 	 * 3 = Deluxe
@@ -71,7 +65,7 @@ function serialize(data: RescueData | RevivalData): string {
 		writer.write(data.dungeon, 7);
 		writer.write(data.floor, 7);
 		writer.write(data.pokemon, 11);
-		writer.write(data.gender, 2);
+		writer.write(0, 2); // Gender
 		writer.write(data.reward, 2);
 		writer.write(0, 1); // Unknown, Can be either 0 or 1
 	} else {
@@ -87,10 +81,6 @@ function serialize(data: RescueData | RevivalData): string {
 	return code.join('');
 }
 
-/**
- * Generates a rescue password. The timestamp, gender of the pokemon being rescued, and the reward type
- * are all hardcoded, since you rarely would want to change them.
- */
 export function generateRescue(data: { team: string; dungeon: number; floor: number; pokemon: number }): string {
 	if (data.team.length < 1 || data.team.length > 12) throw new Error('Team name must be between 1 and 12 characters');
 	const team: number[] = [];
@@ -120,20 +110,14 @@ export function generateRescue(data: { team: string; dungeon: number; floor: num
 		dungeon: data.dungeon,
 		floor: data.floor,
 		pokemon: data.pokemon,
-		gender: 0,
 		reward: 3,
 	};
 	return serialize(rescueData);
 }
 
-/**
- * Generates a revival password from a given rescue password.
- * @param password The rescue password to make a revival password for
- * @param teamName Defaults to "pmd-gen"
- */
-export function generateRevival(password: string, teamName = 'pmd-gen'): string {
-	const passwordData = read(password);
-	if (!passwordData.valid) throw new Error('The provided rescue password was invalid');
+export function generateRevival(password: string, teamName: string): string {
+	const data = deserialize(password);
+	if (data.inclChecksum !== data.calcChecksum) throw new Error('The provided rescue password was invalid');
 
 	if (teamName.length < 1 || teamName.length > 12) throw new Error('Team name must be between 1 and 12 characters');
 	const team: number[] = [];
@@ -145,11 +129,11 @@ export function generateRevival(password: string, teamName = 'pmd-gen'): string 
 		team.push(index);
 	}
 
-	const data: RevivalData = {
+	const revivalData: RevivalData = {
 		timestamp: Math.round(Date.now() / 1000),
 		type: 1,
 		team,
-		revive: passwordData.revive,
+		revive: data.revive,
 	};
-	return serialize(data);
+	return serialize(revivalData);
 }

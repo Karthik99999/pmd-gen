@@ -2,10 +2,10 @@
 	import { base } from '$app/paths';
 	import { RT } from '$lib/generators';
 
-	let sosInput: string;
+	let sosInput = '';
 	let aokResult: string;
-	let aokInput: string;
-	let itemReward: number;
+	let aokInput = '';
+	let itemReward = 0;
 	let thankYouResult: string;
 
 	function formatPassword(password: string) {

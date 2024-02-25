@@ -3,7 +3,7 @@
 	import { RTDX } from '$lib/generators';
 	import PasswordImage from '../PasswordImage.svelte';
 
-	let rescuePassword: string;
+	let rescuePassword = '';
 	let team = 'pmd-gen';
 	let revivalPassword: string;
 

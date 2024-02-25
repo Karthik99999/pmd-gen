@@ -2,9 +2,6 @@ import { bitpack, BitstreamReader } from '../bitstream';
 import { checksum, crc32, RNG, symbols } from './utils';
 import Data from './data';
 
-/**
- * Splits code string into array
- */
 function splitCode(code: string): string[] {
 	code = code.replace(/\s/g, '').toLowerCase();
 	let codeToSplit = '';
@@ -14,9 +11,6 @@ function splitCode(code: string): string[] {
 	return codeToSplit.trim().split(' ');
 }
 
-/**
- * Unshuffles the password symbols
- */
 function unshuffle(code: string[]): string[] {
 	const unshuffledIndex = [
 		3, 27, 13, 21, 12, 9, 7, 4, 6, 17, 19, 16, 28, 29, 23, 20, 11, 0, 1, 22, 24, 14, 8, 2, 15, 25, 10, 5, 18, 26,
@@ -28,16 +22,10 @@ function unshuffle(code: string[]): string[] {
 	return unshuffled;
 }
 
-/**
- * Converts symbols to indexes 0-63
- */
 function toIndexes(code: string[]): number[] {
 	return code.map((c) => symbols.indexOf(c));
 }
 
-/**
- * Decrypt the code by using the same rng method used to encrypt
- */
 function decrypt(code: number[]): number[] {
 	const newcode = code.slice(0, 2);
 	const seed = code[0] | (code[1] << 8);
@@ -51,9 +39,6 @@ function decrypt(code: number[]): number[] {
 	return newcode;
 }
 
-/**
- * Data structure of a password
- */
 interface PasswordData {
 	password: string;
 	inclChecksum: number;
@@ -73,27 +58,7 @@ interface PasswordData {
 type RescueData = PasswordData & { type: 0 };
 type RevivalData = Omit<PasswordData, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward' | 'unknown2'> & { type: 1 };
 
-/**
- * Deserializes a password and returns relevant data
- * for internal use. Use read() to get human-readable data.
- * @param password Password as a string of letters and numbers
- * to represent the icons from the game. The letter or number
- * on the icon should come first, then a letter represnting the
- * shape on the icon should come right after.
- *
- * Fire - F
- *
- * Heart - H
- *
- * Water Drop - W
- *
- * Emerald - E
- *
- * Star - S
- *
- * For example, a 1 on top of a water drop should be 1W.
- */
-function deserialize(password: string): RescueData | RevivalData {
+export function deserialize(password: string): RescueData | RevivalData {
 	const passwordArr = splitCode(password);
 	const unshuffled = unshuffle(passwordArr);
 	const indexes = toIndexes(unshuffled);
@@ -158,114 +123,4 @@ function deserialize(password: string): RescueData | RevivalData {
 		};
 		return data;
 	}
-}
-
-/**
- * Human-friendly data structure of rescue passwords
- */
-interface PasswordInfo {
-	password: string;
-	valid: boolean;
-	timestamp: number;
-	teamName: string;
-	dungeon: string;
-	floor: string;
-	pokemon: string;
-	gender: 'Male' | 'Female' | 'Genderless';
-	reward: 'Deluxe' | 'Special' | 'Regular';
-	revive: number;
-}
-
-type RescueInfo = PasswordInfo & { type: 'Rescue' };
-type RevivalInfo = Omit<PasswordInfo, 'dungeon' | 'floor' | 'pokemon' | 'gender' | 'reward'> & { type: 'Revival' };
-
-/**
- * Parses the raw password data and returns relevant human-readable data
- */
-function parseData(data: RescueData | RevivalData): RescueInfo | RevivalInfo {
-	const valid = data.inclChecksum === data.calcChecksum;
-	let teamName = '';
-	for (const i of data.team) {
-		if (i === 0) break;
-		if (i < 402) {
-			teamName += Data.charmap_text[i];
-		} else {
-			teamName += '★';
-		}
-	}
-	if (data.type === 0) {
-		let dungeon = '';
-		let floor = '';
-		let pokemon = '';
-		const dungeonData = Data.dungeons.get(data.dungeon);
-		if (dungeonData.valid) {
-			dungeon = dungeonData.name;
-			floor = `${dungeonData.ascending ? '' : 'B'}${data.floor}F`;
-		}
-		const pokemonData = Data.pokemon.get(data.pokemon);
-		if (pokemonData.valid) {
-			pokemon = `${pokemonData.name}${pokemonData.const.startsWith('YOBI') ? ' (Shiny)' : ''}`;
-		}
-		const gender = data.gender === 0 ? 'Male' : data.gender === 1 ? 'Female' : 'Genderless';
-		const reward = data.reward === 3 ? 'Deluxe' : data.reward === 2 ? 'Special' : 'Regular';
-
-		const info: RescueInfo = {
-			password: data.password,
-			valid,
-			timestamp: data.timestamp,
-			type: 'Rescue',
-			teamName,
-			dungeon,
-			floor,
-			pokemon,
-			gender,
-			reward,
-			revive: data.revive,
-		};
-		return info;
-	} else if (data.type === 1) {
-		const info: RevivalInfo = {
-			password: data.password,
-			valid,
-			timestamp: data.timestamp,
-			type: 'Revival',
-			teamName,
-			revive: data.revive,
-		};
-		return info;
-	} else {
-		// Empty data
-		return {
-			password: '',
-			valid: false,
-			timestamp: 0,
-			type: 'Revival',
-			teamName: '',
-			revive: 0,
-		};
-	}
-}
-/**
- * Reads a password and returns human-readable data
- * @param password Password as a string of letters and numbers
- * to represent the icons from the game. The letter or number
- * on the icon should come first, then a letter represnting the
- * shape on the icon should come right after.
- *
- * Fire - F
- *
- * Heart - H
- *
- * Water Drop - W
- *
- * Emerald - E
- *
- * Star - S
- *
- * For example, a 1 on top of a water drop should be 1W.
- */
-export function read(password: string): RescueInfo | RevivalInfo {
-	const data = deserialize(password);
-	const info = parseData(data);
-	return info;
 }
