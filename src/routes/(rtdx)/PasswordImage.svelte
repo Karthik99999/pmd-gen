@@ -44,21 +44,19 @@
 		ctx.drawImage(character, x + 13 + extraXOffset, y + 14, 25, 25);
 	}
 
-	$: if (ctx) {
-		loadImage(type).then((background) => ctx.drawImage(background, 0, 0, 967, 254));
-		if (password) {
-			const characters = password.toLowerCase().match(/.{1,2}/g)!;
-			for (let i = 0; i < 30; i++) {
-				const pos = i % 15;
-				const x = 71 + pos * 54 + Math.floor(pos / 5) * 8.5;
-				const y = 71 + (i >= 15 ? 69 : 0) + (pos >= 5 && pos <= 9 ? 8.5 : 0);
-				drawCharacter(characters[i], x, y);
-			}
+	$: if (ctx && password) {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		const characters = password.toLowerCase().match(/.{1,2}/g)!;
+		for (let i = 0; i < 30; i++) {
+			const pos = i % 15;
+			const x = 71 + pos * 54 + Math.floor(pos / 5) * 8.5;
+			const y = 71 + (i >= 15 ? 69 : 0) + (pos >= 5 && pos <= 9 ? 8.5 : 0);
+			drawCharacter(characters[i], x, y);
 		}
 	}
 </script>
 
-<canvas bind:this={canvas} id="password" width="967" height="254" />
+<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} id="password" width="967" height="254" />
 
 <style>
 	canvas {
