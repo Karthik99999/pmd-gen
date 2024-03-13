@@ -7,8 +7,12 @@
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
+	let copyButton: any;
 	onMount(() => {
 		ctx = canvas.getContext('2d')!;
+		// @ts-ignore
+		copyButton = window.$('#copy-button');
+		copyButton.tooltip();
 	});
 
 	function loadImage(name: string) {
@@ -54,15 +58,23 @@
 			drawCharacter(characters[i], x, y);
 		}
 	}
+
+	async function copyPassword() {
+		await navigator.clipboard.writeText(password);
+		copyButton.tooltip('show');
+		setTimeout(() => copyButton.tooltip('hide'), 1500);
+	}
 </script>
 
-<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} id="password" width="967" height="254" />
+<div class="text-center">
+	<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} id="password" width="967" height="254" />
+	<button id="copy-button" class="btn btn-secondary" data-toggle="tooltip" data-trigger="manual" title="Copied!" on:click={copyPassword}>Copy Password Text</button>
+</div>
 
 <style>
 	canvas {
 		width: 100%;
 		height: 100%;
-		text-align: center;
 		padding-top: 2%;
 	}
 </style>
