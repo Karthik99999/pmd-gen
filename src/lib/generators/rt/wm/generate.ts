@@ -34,7 +34,9 @@ export function serialize(data: WonderMailData) {
 	writer.write(data.rewardType, 4);
 	writer.write(data.itemReward || 9, 8);
 	writer.write(data.friendAreaReward || 0, 6);
-	for (let i = 0; i < 3; i++) writer.write(255, 8); // Flavor text
+	for (let i = 0; i < 3; i++) {
+		writer.write(Math.floor(Math.random() * 256), 8); // Flavor text
+	}
 	writer.write(data.dungeon, 7);
 	writer.write(data.floor, 7);
 	writer.write(0, 19); // Pad to 14 bytes
