@@ -68,7 +68,7 @@
 
 <div class="text-center">
 	<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} id="password" width="967" height="254" />
-	<button id="copy-button" class="btn btn-secondary" data-toggle="tooltip" data-trigger="manual" title="Copied!" on:click={copyPassword}>Copy Password Text</button>
+	<button id="copy-button" class="btn btn-secondary" data-toggle="tooltip" data-trigger="manual" title="Copied!" on:click={copyPassword} disabled={!password}>Copy Password Text</button>
 </div>
 
 <style>
