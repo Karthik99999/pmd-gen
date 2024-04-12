@@ -35,13 +35,12 @@ export function checksum(code: number[]) {
 	return sum;
 }
 
-export function crc32(charcode: string): number {
-	const bytes = Array.from(new TextEncoder().encode(charcode)).map(BigInt);
+export function crc32(bytes: string): bigint {
 	let sum = 0xffffffffn;
-	for (const byte of bytes) {
-		sum = BigInt(Data.crc32table[Number((sum & 0xffn) ^ byte)]) ^ (sum >> 8n);
+	for (const byte of new TextEncoder().encode(bytes)) {
+		sum = BigInt(Data.crc32table[Number(sum & 0xffn) ^ byte]) ^ (sum >> 8n);
 	}
-	return Number(sum ^ 0xffffffffn);
+	return sum ^ 0xffffffffn;
 }
 
 /**

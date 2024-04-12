@@ -88,7 +88,7 @@ export function deserialize(password: string): RescueData | RevivalData {
 
 		const bits = symbolsToBits(sanitized);
 		const charcode = bits.map((b) => Data.charmap[b]).join('');
-		const revive = crc32(charcode) & 0x3fffffff;
+		const revive = Number(crc32(charcode) & 0x3fffffffn);
 
 		const data: RescueData = {
 			password,
