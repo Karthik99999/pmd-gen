@@ -2,7 +2,7 @@
  * Contains utility functions used by both the reading and generating logic
  */
 
-import RomData from './romdata';
+import Data from './data';
 
 /**
  * List of symbols
@@ -35,12 +35,13 @@ export function checksum(code: number[]) {
 	return sum;
 }
 
-export function crc32(bytes: string): number {
-	let sum = 0xffffffff;
-	for (let i = 0; i < bytes.length; i++) {
-		sum = RomData.crc32table[(sum & 0xff) ^ Number(bytes[i])] ^ (sum >> 8);
+export function crc32(charcode: string): number {
+	const bytes = Array.from(new TextEncoder().encode(charcode)).map(BigInt);
+	let sum = 0xffffffffn;
+	for (const byte of bytes) {
+		sum = BigInt(Data.crc32table[Number((sum & 0xffn) ^ byte)]) ^ (sum >> 8n);
 	}
-	return sum ^ 0xffffffff;
+	return Number(sum ^ 0xffffffffn);
 }
 
 /**
