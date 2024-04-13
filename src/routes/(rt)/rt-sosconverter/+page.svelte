@@ -50,8 +50,8 @@
 
 <h4>Rescue Team SOS Converter</h4>
 <ul>
-	<li>For the male sign (♂), you may use "m" or "#"</li>
-	<li>For the female sign (♀), you may use "f" or "%"</li>
+	<li>For the male sign (♂), you may use "#"</li>
+	<li>For the female sign (♀), you may use "%"</li>
 	<li>For the ellipsis (…), you may use "."</li>
 </ul>
 

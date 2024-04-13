@@ -3,7 +3,7 @@ import { checksum, crc32, RNG, symbols } from './utils';
 import Data from './data';
 
 function sanitizePassword(password: string): string[] {
-	const split = password.replace(/\s/g, '').match(/.{2}/g);
+	const split = password.toLowerCase().replace(/\s/g, '').match(/.{2}/g);
 	if (split?.length !== 30) throw new Error('Password must be exactly 30 symbols long');
 	for (let symbol of split) {
 		if (!symbols.includes(symbol)) {

@@ -10,14 +10,14 @@ const characters = [
  * Convert password string to array, then
  * validates that all characters of the password are valid
  * and replaces common unicode characters with the less common ones
- * (m,# -> ♂ | f,% -> ♀ | . -> …)
+ * (# -> ♂ | % -> ♀ | . -> …)
  */
 export function sanitizePassword(password: string, length: number): string[] {
-	password = password.replace(/\s/g, '');
+	password = password.toUpperCase().replace(/\s/g, '');
 	if (password.length !== length) throw new Error(`Password must be exactly ${length} characters long`);
 	const sanitized: string[] = [];
 	for (let char of password) {
-		char = char.replace(/\./g, '…').replace(/m|#/g, '♂').replace(/f|%/g, '♀');
+		char = char.replace(/\./g, '…').replace(/#/g, '♂').replace(/%/g, '♀');
 
 		if (characters.includes(char)) {
 			sanitized.push(char);
