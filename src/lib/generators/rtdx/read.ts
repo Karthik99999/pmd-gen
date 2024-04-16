@@ -1,5 +1,5 @@
 import { bitpack, BitstreamReader } from '../bitstream';
-import { checksum, crc32, RNG, symbols } from './utils';
+import { checksum, RNG, symbols } from './utils';
 import Data from './data';
 
 function sanitizePassword(password: string): string[] {
@@ -39,6 +39,14 @@ function decrypt(code: number[]): number[] {
 	const remain = 8 - ((code.length * 8) % 6);
 	newcode[newcode.length - 1] &= (1 << remain) - 1;
 	return newcode;
+}
+
+function getReviveValue(bytes: string): number {
+	let sum = 0xffffffffn;
+	for (const byte of new TextEncoder().encode(bytes)) {
+		sum = BigInt(Data.crc32table[Number(sum & 0xffn) ^ byte]) ^ (sum >> 8n);
+	}
+	return Number((sum ^ 0xffffffffn) & 0x3fffffffn);
 }
 
 interface PasswordData {
@@ -88,7 +96,7 @@ export function deserialize(password: string): RescueData | RevivalData {
 
 		const bits = symbolsToBits(sanitized);
 		const charcode = bits.map((b) => Data.charmap[b]).join('');
-		const revive = Number(crc32(charcode) & 0x3fffffffn);
+		const revive = getReviveValue(charcode);
 
 		const data: RescueData = {
 			password,
