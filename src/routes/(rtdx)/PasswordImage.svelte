@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
+	import { loadImage } from '$lib/utils';
 
-	let { password, type }: {
+	interface PasswordImageProps {
 		password: string;
 		type: 'revival' | 'rescue';
-	} = $props();
+		showCopyButton?: boolean;
+	}
+	let { password, type, showCopyButton = true }: PasswordImageProps = $props();
+	let previousPassword = '';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
@@ -18,16 +22,10 @@
 		copyButton.tooltip();
 	});
 
-	function loadImage(name: string) {
-		return new Promise<HTMLImageElement>((resolve, reject) => {
-			const img = new Image();
-			img.onload = () => resolve(img);
-			img.onerror = reject;
-			img.src = `${base}/rtdx-password/${name}.png`;
-		});
-	}
-
 	async function drawCharacter(char: string, x: number, y: number) {
+		ctx.clearRect(x, y, 53, 53);
+		if (!['1', '2', '3', '4', '5', '6', '7', '8', '9', 'p', 'm', 'd', 'x'].includes(char.charAt(0)) || !['f', 'h', 'w', 'e', 's'].includes(char.charAt(1))) return;
+
 		const symbols: { [k: string]: string } = {
 			f: 'fire',
 			h: 'heart',
@@ -35,10 +33,10 @@
 			e: 'emerald',
 			s: 'star',
 		};
-		const symbol = await loadImage(symbols[char.charAt(1)]);
+		const symbol = await loadImage(`/rtdx-password/${symbols[char.charAt(1)]}.png`);
 		ctx.drawImage(symbol, x, y, 53, 53);
 
-		const character = await loadImage(char.charAt(0));
+		const character = await loadImage(`/rtdx-password/${char.charAt(0)}.png`);
 		let extraXOffset = 0;
 		switch (char.charAt(0)) {
 			case 'm':
@@ -52,15 +50,26 @@
 	}
 
 	$effect(() => {
-		if (ctx && password) {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			const characters = password.toLowerCase().match(/.{1,2}/g)!;
-			for (let i = 0; i < 30; i++) {
-				const pos = i % 15;
-				const x = 71 + pos * 54 + Math.floor(pos / 5) * 8.5;
-				const y = 71 + (i >= 15 ? 69 : 0) + (pos >= 5 && pos <= 9 ? 8.5 : 0);
-				drawCharacter(characters[i], x, y);
+		if (ctx) {
+			if (password) {
+				const characters = password.toLowerCase().match(/.{1,2}/g) || [];
+				const previousCharacters = previousPassword.toLowerCase().match(/.{1,2}/g) || [];
+				const changedIndexes = [];
+				for (let i = 0; i < 30; i++) {
+					if (characters[i] !== previousCharacters[i]) {
+						changedIndexes.push(i);
+					}
+				}
+				for (const i of changedIndexes) {
+					const pos = i % 15;
+					const x = 71 + pos * 54 + Math.floor(pos / 5) * 8.5;
+					const y = 71 + (i >= 15 ? 69 : 0) + (pos >= 5 && pos <= 9 ? 8.5 : 0);
+					drawCharacter(characters[i] || '', x, y);
+				}
+			} else {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 			}
+			previousPassword = password;
 		}
 	});
 
@@ -73,8 +82,10 @@
 </script>
 
 <div class="text-center">
-	<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} id="password" width="967" height="254"></canvas>
-	<button id="copy-button" class="btn btn-secondary" data-toggle="tooltip" data-trigger="manual" title="Copied!" onclick={copyPassword} disabled={!password}>Copy Password Text</button>
+	<canvas style="background: url('{base}/rtdx-password/{type}.png') 100% 100% / 100% no-repeat;" bind:this={canvas} width="967" height="254"></canvas>
+	{#if showCopyButton}
+		<button id="copy-button" class="btn btn-secondary" data-toggle="tooltip" data-trigger="manual" title="Copied!" onclick={copyPassword} disabled={!password}>Copy Password Text</button>
+	{/if}
 </div>
 
 <style>

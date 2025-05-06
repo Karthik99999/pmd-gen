@@ -2,8 +2,6 @@
  * Contains utility functions used by both the reading and generating logic
  */
 
-import Data from './data';
-
 /**
  * List of symbols
  * (xs is not included since it is never used in passwords)
