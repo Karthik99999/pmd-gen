@@ -52,7 +52,7 @@
 		<slot />
 	</div>
 	<footer class="text-center text-muted">
-		<p class="pb-2 mb-2 border-bottom">© 2024 Karthik B. | <a href="https://github.com/Karthik99999/pmd-gen" target="_blank">Source</a></p>
+		<p class="pb-2 mb-2 border-bottom">© 2025 Karthik B. | <a href="https://github.com/Karthik99999/pmd-gen" target="_blank">Source</a></p>
 		<p>All game logos used on this site belong to The Pokémon Company. This site is not affiliated with The Pokémon Company or Spike Chunsoft in any way.</p>
 	</footer>
 </div>
