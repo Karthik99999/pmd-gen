@@ -34,7 +34,7 @@
 			{#each ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'p', 'm', 'd', 'x'] as letter}
 				{@const char = letter + symbol}
 				{#if char === 'xs'}
-					<button class="btn btn-light btn-password" aria-label={char} onclick={() => (rescuePassword = rescuePassword.slice(0, -2))}>
+					<button class="btn btn-light btn-password" aria-label="delete" onclick={() => (rescuePassword = rescuePassword.slice(0, -2))}>
 						<i class="bi bi-backspace-fill" style="font-size: 5vmin;"></i>
 					</button>
 				{:else}
