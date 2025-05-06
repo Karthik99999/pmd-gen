@@ -59,5 +59,6 @@
 		margin: 2px !important;
 		width: 8vmin;
 		height: 8vmin;
+		touch-action: manipulation;
 	}
 </style>
