@@ -3,9 +3,9 @@
 	import { RTDX } from '$lib/generators';
 	import PasswordImage from '../PasswordImage.svelte';
 
-	let rescuePassword = '';
-	let team = 'pmd-gen';
-	let revivalPassword: string;
+	let rescuePassword = $state('');
+	let team = $state('pmd-gen');
+	let revivalPassword = $state('');
 
 	function generate() {
 		try {
@@ -21,7 +21,7 @@
 </svelte:head>
 
 <center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill" /> Home</a>
+	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
 </center>
 
 <h4>Rescue Team DX Revival Password Generator</h4>
@@ -35,11 +35,11 @@
 <p>For example: "1f xh pw 4e 8s"</p>
 <div class="form-group">
 	<label for="password">Rescue password:</label>
-	<textarea class="form-control" id="password" bind:value={rescuePassword} />
+	<textarea class="form-control" id="password" bind:value={rescuePassword}></textarea>
 </div>
 <div class="form-group">
 	<label for="team">Team name (that will "rescue" you):</label>
 	<input type="text" class="form-control" id="team" maxlength="12" placeholder="Poképals" bind:value={team} />
 </div>
-<button class="btn btn-primary" on:click={generate}>Generate</button>
-<PasswordImage password={revivalPassword} type="revival" />
+<button class="btn btn-primary" onclick={generate}>Generate</button>
+<PasswordImage password={revivalPassword} type="revival"></PasswordImage>

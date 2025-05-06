@@ -4,9 +4,9 @@
 	import { createForm } from 'felte';
 	import PasswordImage from '../PasswordImage.svelte';
 
-	let dungeonIndex = 1;
-	$: dungeon = RTDX.data.dungeons.get(dungeonIndex);
-	let password: string;
+	let dungeonIndex = $state(1);
+	const dungeon = $derived(RTDX.data.dungeons.get(dungeonIndex));
+	let password = $state('');
 
 	const { form } = createForm({
 		transform: (values: any) => ({
@@ -30,7 +30,7 @@
 </svelte:head>
 
 <center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill" /> Home</a>
+	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
 </center>
 
 <h4>Rescue Team DX Friend Rescue Generator</h4>

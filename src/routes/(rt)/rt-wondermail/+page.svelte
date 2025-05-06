@@ -3,10 +3,10 @@
 	import { RT } from '$lib/generators';
 	import { createForm } from 'felte';
 
-	let missionType = 0;
-	let dungeonIndex = 0;
-	$: dungeon = RT.data.dungeons.get(dungeonIndex);
-	let password: string;
+	let missionType = $state(0);
+	let dungeonIndex = $state(0);
+	let dungeon = $derived(RT.data.dungeons.get(dungeonIndex));
+	let password = $state('');
 
 	function formatPassword(password: string) {
 		if (!password) return '';
@@ -44,7 +44,7 @@
 </svelte:head>
 
 <center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill" /> Home</a>
+	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
 </center>
 
 <h4>Rescue Team Wonder Mail Generator</h4>
@@ -129,7 +129,7 @@
 	</div>
 	<button type="submit" class="btn btn-primary">Generate</button>
 </form>
-<textarea class="form-control" id="password" rows="2" readonly bind:value={password} />
+<textarea class="form-control" id="password" rows="2" readonly bind:value={password}></textarea>
 
 <style>
 	textarea {

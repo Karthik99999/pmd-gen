@@ -42,7 +42,7 @@
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
-			<a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px"><i class="bi bi-github" style="color:white"></i></a>
+			<a href="https://github.com/Karthik99999/pmd-gen" target="_blank" style="font-size:35px" aria-label="GitHub"><i class="bi bi-github" style="color:white"></i></a>
 		</ul>
 	</div>
 </nav>

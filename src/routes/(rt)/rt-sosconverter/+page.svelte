@@ -2,11 +2,11 @@
 	import { base } from '$app/paths';
 	import { RT } from '$lib/generators';
 
-	let sosInput = '';
-	let aokResult: string;
-	let aokInput = '';
-	let itemReward = 0;
-	let thankYouResult: string;
+	let sosInput = $state('');
+	let aokResult = $state('');
+	let aokInput = $state('');
+	let itemReward = $state(0);
+	let thankYouResult = $state('');
 
 	function formatPassword(password: string) {
 		if (!password) return '';
@@ -45,7 +45,7 @@
 </svelte:head>
 
 <center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill" /> Home</a>
+	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
 </center>
 
 <h4>Rescue Team SOS Converter</h4>
@@ -58,16 +58,16 @@
 <div class="mb-3">
 	<div class="form-group">
 		<label for="sos">SOS to A-OK:</label>
-		<textarea class="form-control" rows="3" bind:value={sosInput} />
+		<textarea class="form-control" rows="3" bind:value={sosInput}></textarea>
 	</div>
-	<button class="btn btn-primary" on:click={convertSOS}>Convert</button>
+	<button class="btn btn-primary" onclick={convertSOS}>Convert</button>
 </div>
-<textarea class="form-control" rows="3" readonly bind:value={aokResult} />
+<textarea class="form-control" rows="3" readonly bind:value={aokResult}></textarea>
 
 <div class="mt-3 mb-3">
 	<div class="form-group">
 		<label for="sos">A-OK to Thank-You:</label>
-		<textarea class="form-control" rows="3" bind:value={aokInput} />
+		<textarea class="form-control" rows="3" bind:value={aokInput}></textarea>
 	</div>
 	<div class="form-group">
 		<label for="item-reward">Item reward:</label>
@@ -78,9 +78,9 @@
 			{/each}
 		</select>
 	</div>
-	<button class="btn btn-primary" on:click={convertAOK}>Convert</button>
+	<button class="btn btn-primary" onclick={convertAOK}>Convert</button>
 </div>
-<textarea class="form-control" rows="3" readonly bind:value={thankYouResult} />
+<textarea class="form-control" rows="3" readonly bind:value={thankYouResult}></textarea>
 
 <style>
 	textarea {
