@@ -38,7 +38,7 @@
 						<i class="bi bi-backspace-fill" style="font-size: 5vmin;"></i>
 					</button>
 				{:else}
-					<button class="btn btn-light btn-password" aria-label={char} onclick={() => (rescuePassword += char)}>
+					<button class="btn btn-light btn-password" aria-label={char} onclick={() => (rescuePassword.length < 60 && (rescuePassword += char))}>
 						<PasswordSymbol {char}></PasswordSymbol>
 					</button>
 				{/if}
