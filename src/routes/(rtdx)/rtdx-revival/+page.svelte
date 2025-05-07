@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { RTDX } from '$lib/generators';
 	import PasswordImage from '../PasswordImage.svelte';
 	import PasswordSymbol from '../PasswordSymbol.svelte';
@@ -20,10 +19,6 @@
 <svelte:head>
 	<title>PMD Gen | Rescue Team DX Revival Password Generator</title>
 </svelte:head>
-
-<center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
-</center>
 
 <h4>Rescue Team DX Revival Password Generator</h4>
 

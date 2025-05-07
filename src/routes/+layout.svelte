@@ -1,5 +1,6 @@
 <script>
 	import { base } from '$app/paths';
+	import { page } from '$app/state';
 </script>
 
 <svelte:head>
@@ -49,6 +50,11 @@
 
 <div class="container pt-3 mt-3">
 	<div class="jumbotron">
+		{#if `${base}/` !== page.url.pathname}
+			<center>
+				<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
+			</center>
+		{/if}
 		<slot />
 	</div>
 	<footer class="text-center text-muted">

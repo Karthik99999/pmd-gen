@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
 	import { RT } from '$lib/generators';
 	import { createForm } from 'felte';
 
@@ -42,10 +41,6 @@
 <svelte:head>
 	<title>PMD Gen | Rescue Team Wonder Mail Generator</title>
 </svelte:head>
-
-<center>
-	<a class="text-decoration-none" href="{base}/"><i class="bi bi-house-fill"></i> Home</a>
-</center>
 
 <h4>Rescue Team Wonder Mail Generator</h4>
 
