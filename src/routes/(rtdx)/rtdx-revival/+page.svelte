@@ -2,8 +2,15 @@
 	import { RTDX } from '$lib/generators';
 	import PasswordImage from '../PasswordImage.svelte';
 	import PasswordSymbol from '../PasswordSymbol.svelte';
+	import PasswordScanner from '../PasswordScanner.svelte';
 
 	let rescuePassword = $state('');
+	let scanWarning = $state('');
+
+	function onscan(password: string, valid: boolean) {
+		rescuePassword = password;
+		scanWarning = valid ? '' : 'Some symbols could not be read correctly, please compare them with your screen and fix them.';
+	}
 	let team = $state('pmd-gen');
 	let revivalPassword = $state('');
 
@@ -23,6 +30,12 @@
 <h4>Rescue Team DX Revival Password Generator</h4>
 
 <div class="form-group">
+	<div class="text-center">
+		<PasswordScanner {onscan}></PasswordScanner>
+	</div>
+	{#if scanWarning}
+		<div class="alert alert-warning">{scanWarning}</div>
+	{/if}
 	<PasswordImage password={rescuePassword} type="rescue" showCopyButton={false}></PasswordImage>
 	{#each ['f', 'h', 'w', 'e', 's'] as symbol}
 		<div class="text-center">
